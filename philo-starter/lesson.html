@@ -6,54 +6,219 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-slate-900">
-  <main class="max-w-4xl mx-auto px-4 py-10">
+  <main class="max-w-5xl mx-auto px-4 py-10">
     <a href="index.html" class="text-sm text-blue-600">← 返回首页</a>
-    <h1 class="mt-4 text-3xl font-semibold">自由与决定论</h1>
-    <p class="mt-2 text-slate-600">目标：理解强/弱决定论与非决定论的核心论证，能在现实案例中识别它们的假设。</p>
-    <div class="mt-6 grid md:grid-cols-[220px,1fr] gap-8">
+    <div class="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Module 01</p>
+        <h1 class="mt-2 text-3xl md:text-4xl font-semibold">自由与决定论</h1>
+        <p class="mt-3 text-slate-600">目标：理解强/弱决定论与非决定论的核心论证，能在现实案例中识别它们的假设，并评估责任归属。</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 text-sm text-slate-600">
+        <div class="p-3 rounded-xl border bg-slate-50">
+          <p class="text-xs text-slate-400">预计时间</p>
+          <p class="mt-1 font-medium text-slate-700">45-60 分钟</p>
+        </div>
+        <div class="p-3 rounded-xl border bg-slate-50">
+          <p class="text-xs text-slate-400">适用场景</p>
+          <p class="mt-1 font-medium text-slate-700">TOK 展示 / 课堂讨论</p>
+        </div>
+        <div class="p-3 rounded-xl border bg-slate-50">
+          <p class="text-xs text-slate-400">关键词</p>
+          <p class="mt-1 font-medium text-slate-700">因果、责任、自由</p>
+        </div>
+        <div class="p-3 rounded-xl border bg-slate-50">
+          <p class="text-xs text-slate-400">推荐组合</p>
+          <p class="mt-1 font-medium text-slate-700">与 Module 03 联动</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-[240px,1fr] gap-10">
       <aside class="order-2 md:order-1">
-        <div class="sticky top-6 p-4 rounded-xl border">
-          <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">目录</div>
+        <div class="md:sticky md:top-8 p-4 rounded-xl border bg-slate-50">
+          <div class="text-xs uppercase tracking-wide text-slate-400 mb-2">目录</div>
           <ul class="space-y-2 text-sm">
             <li><a class="hover:text-blue-600" href="#intro">导学</a></li>
-            <li><a class="hover:text-blue-600" href="#key">核心要点</a></li>
-            <li><a class="hover:text-blue-600" href="#quote">关键文本</a></li>
+            <li><a class="hover:text-blue-600" href="#map">论证图</a></li>
+            <li><a class="hover:text-blue-600" href="#compare">立场对照</a></li>
+            <li><a class="hover:text-blue-600" href="#case">现实案例</a></li>
             <li><a class="hover:text-blue-600" href="#quiz">练习</a></li>
+            <li><a class="hover:text-blue-600" href="#reflect">反思问题</a></li>
             <li><a class="hover:text-blue-600" href="#ref">参考资料</a></li>
           </ul>
         </div>
       </aside>
+
       <article class="prose prose-slate max-w-none order-1 md:order-2">
-        <h2 id="intro">导学</h2>
-        <p>我们用“论证图”方式把三种立场并列：前提→结论→可反驳点。请注意区分<strong>因果必然性</strong>与<strong>认识上的不确定</strong>。</p>
-        <h2 id="key">核心要点</h2>
-        <ul>
-          <li><strong>强决定论：</strong>一切由先前因果决定；自由只是错觉。</li>
-          <li><strong>弱决定论（相容论）：</strong>决定世界里仍可谈责任（把“自由”理解为无外在强迫）。</li>
-          <li><strong>非决定论：</strong>并非一切受因果必然支配；但“随机”未必能导出责任。</li>
-        </ul>
-        <h2 id="quote">关键文本</h2>
-        <blockquote>
-          <p>“自由意志的问题，不在于‘能否不受因果’，而在于‘我们如何定位责任的归属’。”</p>
-        </blockquote>
-        <h2 id="quiz">练习</h2>
-        <details class="p-4 border rounded-xl">
-          <summary class="cursor-pointer font-medium">单选题 1：在相容论中，“自由”最接近的含义是？</summary>
-          <ol class="list-decimal pl-6 mt-3">
-            <li>完全脱离因果的行动</li>
-            <li>无外在强迫且行动源于主体意志</li>
-            <li>随机选择</li>
-            <li>命运注定</li>
-          </ol>
-          <div class="mt-3 text-sm text-slate-600">
-            <strong>答案：</strong>②。相容论把自由理解为“无外在强迫 + 内在动机一致”。
+        <section id="intro">
+          <h2>导学</h2>
+          <p>我们用“论证图”方式把三种立场并列：前提 → 结论 → 可反驳点。请注意区分<strong>因果必然性</strong>与<strong>认识上的不确定</strong>：即使我们无法预测，也不意味着事件不是决定的。建议在阅读时自问：“如果我接受这个前提，我是否不得不接受它的结论？”</p>
+          <div class="grid md:grid-cols-3 gap-4 text-sm not-prose mt-6">
+            <div class="p-4 border rounded-xl bg-slate-50">
+              <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">Focus</p>
+              <p class="mt-2 font-semibold text-slate-800">自由的定义</p>
+              <p class="mt-2 text-slate-600">厘清“能否选择”与“免于外在强迫”的差异，决定论者与相容论者往往在用不同的标准。</p>
+            </div>
+            <div class="p-4 border rounded-xl bg-slate-50">
+              <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">Focus</p>
+              <p class="mt-2 font-semibold text-slate-800">责任的归属</p>
+              <p class="mt-2 text-slate-600">注意论证中如何从“事实”跳到“应该”，是否引入了隐含的道德假设。</p>
+            </div>
+            <div class="p-4 border rounded-xl bg-slate-50">
+              <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">Focus</p>
+              <p class="mt-2 font-semibold text-slate-800">TOK 连接</p>
+              <p class="mt-2 text-slate-600">本单元可用于回答“行动与知识之间的关系”或“责任的知识基础”类问题。</p>
+            </div>
           </div>
-        </details>
-        <h2 id="ref">参考资料</h2>
-        <ul>
-          <li>入门：相容论/自由意志条目（哲学百科/斯坦福哲学百科）</li>
-          <li>延伸：责任与惩罚的正当性（康德/功利主义视角对照）</li>
-        </ul>
+        </section>
+
+        <section id="map">
+          <h2>论证图</h2>
+          <p>把以下框架打印或抄写到笔记本，尝试以箭头连线不同立场的“论证推进”与“反驳点”。</p>
+          <div class="not-prose mt-6 grid gap-4">
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="text-base font-semibold text-slate-800">强决定论（Hard Determinism）</h3>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <li><strong>前提：</strong>宇宙的每个事件都由上一状态必然推出。</li>
+                <li><strong>推论：</strong>所谓“自由选择”只是我们对复杂因果链的不了解。</li>
+                <li><strong>反驳点：</strong>如果自由是错觉，道德赞赏或惩罚是否仍有意义？</li>
+              </ul>
+            </div>
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="text-base font-semibold text-slate-800">相容论（Compatibilism）</h3>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <li><strong>前提：</strong>自由只要求行动由主体内部意志发出，且无外在强迫。</li>
+                <li><strong>推论：</strong>即使因果决定存在，我们仍可依据动机归责。</li>
+                <li><strong>反驳点：</strong>如果意志本身被决定，我们如何区分“真实自我”？</li>
+              </ul>
+            </div>
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="text-base font-semibold text-slate-800">非决定论（Libertarianism）</h3>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <li><strong>前提：</strong>至少部分行动并非严格由先前因果决定。</li>
+                <li><strong>推论：</strong>自由体现在主体拥有真正的“能选择不做”的能力。</li>
+                <li><strong>反驳点：</strong>如果选择带有随机性，又如何建立责任？</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="compare">
+          <h2>立场对照</h2>
+          <p>使用下表梳理差异，尝试在课堂讨论中引用具体例子。表格右列留作你的补充案例。</p>
+          <div class="overflow-x-auto not-prose">
+            <table class="min-w-full text-sm border border-slate-200">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="px-4 py-3 text-left font-semibold">问题</th>
+                  <th class="px-4 py-3 text-left font-semibold">强决定论</th>
+                  <th class="px-4 py-3 text-left font-semibold">相容论</th>
+                  <th class="px-4 py-3 text-left font-semibold">非决定论</th>
+                  <th class="px-4 py-3 text-left font-semibold">你的案例</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="px-4 py-3 text-slate-600">什么算“自由”？</td>
+                  <td class="px-4 py-3">自由=幻觉；只有因果。</td>
+                  <td class="px-4 py-3">无外在强迫即可称为自由。</td>
+                  <td class="px-4 py-3">真实的选择能力，可能超越因果。</td>
+                  <td class="px-4 py-3 text-slate-400">填写你的示例</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 text-slate-600">责任如何成立？</td>
+                  <td class="px-4 py-3">或主张取消/弱化责任。</td>
+                  <td class="px-4 py-3">根据动机与意志追责。</td>
+                  <td class="px-4 py-3">自由选择导致责任。</td>
+                  <td class="px-4 py-3 text-slate-400">填写你的示例</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 text-slate-600">面对惩罚制度？</td>
+                  <td class="px-4 py-3">更多谈“矫正”而非责罚。</td>
+                  <td class="px-4 py-3">维持惩罚以维系社会秩序。</td>
+                  <td class="px-4 py-3">惩罚是保障自由选择的代价。</td>
+                  <td class="px-4 py-3 text-slate-400">填写你的示例</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="case">
+          <h2>现实案例</h2>
+          <p>从以下案例中任选一个，写出三个不同立场的回应，并说明你的判断依据。</p>
+          <div class="not-prose grid gap-4 md:grid-cols-2">
+            <div class="p-4 border rounded-xl bg-slate-50">
+              <h3 class="text-base font-semibold text-slate-800">AI 自动驾驶事故</h3>
+              <p class="mt-2 text-sm text-slate-600">无人车在复杂天气中误判导致碰撞。谁应承担责任？制造商、算法设计者还是使用者？</p>
+              <p class="mt-3 text-xs text-slate-500">提示：注意“可预测性”与“可控性”之间的关系。</p>
+            </div>
+            <div class="p-4 border rounded-xl bg-slate-50">
+              <h3 class="text-base font-semibold text-slate-800">青少年冲动犯罪</h3>
+              <p class="mt-2 text-sm text-slate-600">被告声称自己的成长环境与遗传因素导致冲动行为。法院是否应减轻惩罚？</p>
+              <p class="mt-3 text-xs text-slate-500">提示：相容论如何看待“能控制自己”这一判断？</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>练习</h2>
+          <details class="p-4 border rounded-xl bg-white">
+            <summary class="cursor-pointer font-medium text-slate-800">单选题 1：在相容论中，“自由”最接近的含义是？</summary>
+            <ol class="list-decimal pl-6 mt-3 text-sm text-slate-600">
+              <li>完全脱离因果的行动</li>
+              <li>无外在强迫且行动源于主体意志</li>
+              <li>随机选择</li>
+              <li>命运注定</li>
+            </ol>
+            <div class="mt-3 text-sm text-slate-600">
+              <strong>答案：</strong>②。相容论把自由理解为“无外在强迫 + 内在动机一致”。
+            </div>
+          </details>
+          <details class="mt-4 p-4 border rounded-xl bg-white">
+            <summary class="cursor-pointer font-medium text-slate-800">写作练习：你同意“强决定论意味着惩罚制度失效”吗？</summary>
+            <div class="mt-3 text-sm text-slate-600 space-y-2">
+              <p>写 180-200 字回应。结构建议：</p>
+              <ul class="list-disc pl-6">
+                <li>提出你的立场，并引用上述论证图的一个前提。</li>
+                <li>举一个现实案例或 TOK 经验支持。</li>
+                <li>承认潜在反驳并做出回应。</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <section id="reflect">
+          <h2>反思问题</h2>
+          <ul>
+            <li>自由的体验是否可能来自于“对自身动机的认同”而非“未被因果决定”？</li>
+            <li>若我们把责任理解为“社会实践”，是否仍然需要关注自由？</li>
+            <li>当科技能预测行为时，法律与伦理如何重新划界？</li>
+          </ul>
+        </section>
+
+        <section id="ref">
+          <h2>参考资料</h2>
+          <ul>
+            <li><em>Stanford Encyclopedia of Philosophy</em>：自由意志与相容论条目。</li>
+            <li>Peter van Inwagen, <em>An Essay on Free Will</em>（1983）。</li>
+            <li>视频推荐：Crash Course Philosophy #24-26，自由意志与决定论系列。</li>
+          </ul>
+        </section>
+
+        <section class="not-prose mt-10">
+          <div class="p-4 border rounded-2xl bg-slate-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-700">继续学习下一单元</p>
+              <p class="text-xs text-slate-500">将自由与责任的讨论带到“真理与知识”或“伦理与责任”。</p>
+            </div>
+            <div class="flex gap-3 text-sm">
+              <a class="px-3 py-2 rounded-xl border border-slate-300 hover:border-blue-500 text-blue-600" href="truth.html">真理与知识</a>
+              <a class="px-3 py-2 rounded-xl border border-slate-300 hover:border-blue-500 text-blue-600" href="ethics.html">伦理与责任</a>
+            </div>
+          </div>
+        </section>
       </article>
     </div>
   </main>
