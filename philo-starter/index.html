@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PhiloHub · 哲学学习站</title>
+  <meta name="description" content="为高中生与TOK准备的哲学学习与练习网站：自由与决定论、真理与知识、伦理与责任。">
+  <link rel="icon" href="favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: 'hsl(var(--brand))',
+            ink:   'hsl(var(--ink))',
+            bg:    'hsl(var(--bg))',
+            card:  'hsl(var(--card))'
+          },
+          fontFamily: {
+            sans: ['Inter','Noto Sans SC','system-ui','sans-serif'],
+            serif:['Noto Serif SC','serif']
+          },
+          boxShadow:{soft:'0 10px 30px -10px rgba(0,0,0,0.15)'}
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{--brand:230 70% 56%;--ink:222 18% 18%;--bg:220 20% 98%;--card:0 0% 100%;}
+    .container{max-width:1100px}
+  </style>
+</head>
+<body class="bg-[hsl(var(--bg))] text-[hsl(var(--ink))] font-sans antialiased">
+  <header class="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-black/5">
+    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+      <a class="flex items-center gap-2 font-semibold" href="#">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand"></span> PhiloHub
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a class="hover:text-brand" href="#tracks">学习路线</a>
+        <a class="hover:text-brand" href="#modules">专题</a>
+        <a class="hover:text-brand" href="#glossary">术语</a>
+        <a class="hover:text-brand" href="#feedback">反馈</a>
+      </nav>
+      <a href="#modules" class="text-sm px-3 py-1.5 rounded-xl bg-brand text-white shadow-soft hover:opacity-95">开始学习</a>
+    </div>
+  </header>
+
+  <section class="container mx-auto px-4 py-16 md:py-24">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
+          用结构化的方式<br><span class="text-brand">理解哲学与TOK</span>
+        </h1>
+        <p class="mt-5 text-[15px] text-black/70">
+          以“问题—概念—论证—反思”为主线，提供精读导引、练习解析与术语微词典，助你在有限时间内构建清晰的知识图谱。
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="lesson.html" class="px-4 py-2 rounded-xl bg-brand text-white shadow-soft">浏览专题</a>
+          <a href="#tracks" class="px-4 py-2 rounded-xl border border-black/10 hover:border-black/20">学习路线</a>
+        </div>
+      </div>
+      <div class="bg-[hsl(var(--card))] rounded-2xl p-6 shadow-soft border border-black/5">
+        <div class="text-xs uppercase tracking-wider text-black/50 mb-2">学习进度示意</div>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl border border-black/10">
+            <div class="flex justify-between text-sm">
+              <span>自由 vs 决定论</span><span>2/5</span>
+            </div>
+            <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
+              <div class="h-2 bg-brand w-2/5"></div>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl border border-black/10">
+            <div class="flex justify-between text-sm">
+              <span>真理与知识</span><span>3/5</span>
+            </div>
+            <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
+              <div class="h-2 bg-brand w-3/5"></div>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl border border-black/10">
+            <div class="flex justify-between text-sm">
+              <span>伦理与责任</span><span>1/5</span>
+            </div>
+            <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
+              <div class="h-2 bg-brand w-1/5"></div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-4 text-xs text-black/60">* 进度来自本地缓存，后续可接入账户或表单。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules" class="container mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold mb-6">核心专题</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="lesson.html">
+        <div class="text-brand text-xs font-semibold mb-2">Module 01</div>
+        <h3 class="text-lg font-semibold">自由与决定论</h3>
+        <p class="mt-2 text-sm text-black/70">强决定论、弱决定论与非决定论的结构化比较；经典论证与现实应用。</p>
+        <div class="mt-4 text-sm text-brand">进入 →</div>
+      </a>
+      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="#">
+        <div class="text-brand text-xs font-semibold mb-2">Module 02</div>
+        <h3 class="text-lg font-semibold">真理与知识</h3>
+        <p class="mt-2 text-sm text-black/70">符合/融贯/实用与语义理论；盖梯尔问题与TOK知识问题。</p>
+        <div class="mt-4 text-sm text-brand">进入 →</div>
+      </a>
+      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="#">
+        <div class="text-brand text-xs font-semibold mb-2">Module 03</div>
+        <h3 class="text-lg font-semibold">伦理与责任</h3>
+        <p class="mt-2 text-sm text-black/70">康德义务论、功利主义与德性伦理的张力与调和。</p>
+        <div class="mt-4 text-sm text-brand">进入 →</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-14">
+    <figure class="p-8 md:p-12 rounded-3xl bg-white border border-black/5 shadow-soft">
+      <blockquote class="text-xl md:text-2xl font-serif leading-relaxed">
+        “我们并不是拥有真理，而是在追求中不断修正；所谓‘确定’，往往只是临时的停靠。”
+      </blockquote>
+      <figcaption class="mt-4 text-sm text-black/60">—— 课程引言 · Introduction</figcaption>
+    </figure>
+  </section>
+
+  <footer id="feedback" class="border-t border-black/5">
+    <div class="container mx-auto px-4 py-10 text-sm text-black/60">
+      <div class="md:flex items-center justify-between">
+        <p>© 2025 PhiloHub · CC BY-NC 内容许可</p>
+        <a class="underline hover:text-brand" href="https://forms.gle/">提交反馈（Google表单）</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
