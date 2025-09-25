@@ -4,39 +4,100 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>伦理与责任 · Lesson</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: 'hsl(var(--brand))',
+            ink:   'hsl(var(--ink))',
+            bg:    'hsl(var(--bg))',
+            card:  'hsl(var(--card))'
+          },
+          fontFamily: {
+            sans: ['Inter','Noto Sans SC','system-ui','sans-serif'],
+            serif:['Noto Serif SC','serif']
+          },
+          boxShadow:{soft:'0 18px 40px -18px rgba(10,10,35,0.55)'}
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{
+      --brand:266 85% 72%;
+      --ink:220 32% 92%;
+      --bg:229 52% 6%;
+      --card:228 27% 16%;
+      --card-strong:228 30% 19%;
+      --line:227 26% 32%;
+      --muted:220 18% 72%;
+    }
+    body{
+      background: radial-gradient(120% 140% at 20% -10%, rgba(113,94,255,0.35) 0%, rgba(34,26,71,0.85) 32%, hsl(var(--bg)) 65%) fixed;
+      color: hsl(var(--ink));
+      min-height: 100vh;
+    }
+    ::selection{background:hsl(var(--brand));color:#0e061f}
+    .bg-white{background-color:hsl(var(--card))!important}
+    .bg-white\/80{background-color:hsl(var(--card)/0.85)!important}
+    .bg-white\/70{background-color:hsl(var(--card)/0.75)!important}
+    .bg-white\/10{background-color:hsl(var(--card)/0.18)!important}
+    .bg-white\/5{background-color:hsl(var(--card)/0.12)!important}
+    .bg-brand\/5{background-color:hsl(var(--brand)/0.16)!important}
+    .bg-black\/5{background-color:hsl(var(--ink)/0.12)!important}
+    .border-black\/10{border-color:hsl(var(--line)/0.55)!important}
+    .border-black\/5{border-color:hsl(var(--line)/0.35)!important}
+    .text-black\/70{color:hsl(var(--ink)/0.78)!important}
+    .text-black\/60{color:hsl(var(--ink)/0.66)!important}
+    .text-black\/50{color:hsl(var(--ink)/0.55)!important}
+    .text-black\/40{color:hsl(var(--ink)/0.45)!important}
+    .text-slate-900{color:hsl(var(--ink))!important}
+    .text-slate-800{color:hsl(var(--ink)/0.88)!important}
+    .text-slate-700{color:hsl(var(--ink)/0.78)!important}
+    .text-slate-600{color:hsl(var(--ink)/0.66)!important}
+    .text-slate-500{color:hsl(var(--ink)/0.58)!important}
+    .text-slate-400{color:hsl(var(--ink)/0.48)!important}
+    .bg-slate-50{background:linear-gradient(140deg,hsl(var(--card)) 0%,hsl(var(--card-strong)) 100%)!important}
+    .border-slate-200{border-color:hsl(var(--line)/0.45)!important}
+    .border-slate-300{border-color:hsl(var(--line)/0.58)!important}
+    .text-blue-600{color:hsl(var(--brand))!important}
+    .hover\:text-blue-600:hover{color:hsl(var(--brand))!important}
+    .hover\:border-blue-500:hover{border-color:hsl(var(--brand))!important}
+  </style>
 </head>
-<body class="bg-white text-slate-900">
-  <main class="max-w-5xl mx-auto px-4 py-10">
-    <a href="index.html" class="text-sm text-blue-600">← 返回首页</a>
-    <div class="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+<body class="bg-[hsl(var(--bg))] text-[hsl(var(--ink))] font-sans antialiased">
+  <main class="max-w-5xl mx-auto px-4 py-12 space-y-12">
+    <a href="index.html" class="inline-flex items-center gap-1 text-sm text-blue-600">← 返回首页</a>
+    <div class="rounded-3xl border border-white/10 bg-white/10 shadow-soft p-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div>
         <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Module 03</p>
         <h1 class="mt-2 text-3xl md:text-4xl font-semibold">伦理与责任</h1>
         <p class="mt-3 text-slate-600">目标：掌握义务论、功利主义与德性伦理的核心逻辑，比较它们在公共政策与日常抉择中的应用。</p>
       </div>
       <div class="grid grid-cols-2 gap-3 text-sm text-slate-600">
-        <div class="p-3 rounded-xl border bg-slate-50">
+        <div class="p-3 rounded-xl border border-white/10 bg-white/10">
           <p class="text-xs text-slate-400">预计时间</p>
           <p class="mt-1 font-medium text-slate-700">45-60 分钟</p>
         </div>
-        <div class="p-3 rounded-xl border bg-slate-50">
+        <div class="p-3 rounded-xl border border-white/10 bg-white/10">
           <p class="text-xs text-slate-400">适用场景</p>
           <p class="mt-1 font-medium text-slate-700">课堂辩论 / Extended Essay</p>
         </div>
-        <div class="p-3 rounded-xl border bg-slate-50">
+        <div class="p-3 rounded-xl border border-white/10 bg-white/10">
           <p class="text-xs text-slate-400">关键词</p>
           <p class="mt-1 font-medium text-slate-700">义务、功利、德性、责任</p>
         </div>
-        <div class="p-3 rounded-xl border bg-slate-50">
+        <div class="p-3 rounded-xl border border-white/10 bg-white/10">
           <p class="text-xs text-slate-400">建议搭配</p>
           <p class="mt-1 font-medium text-slate-700">自由意志 / 真理写作</p>
         </div>
       </div>
     </div>
 
-    <div class="mt-10 grid md:grid-cols-[240px,1fr] gap-10">
+    <div class="grid md:grid-cols-[240px,1fr] gap-10">
       <aside class="order-2 md:order-1">
-        <div class="md:sticky md:top-8 p-4 rounded-xl border bg-slate-50">
+        <div class="md:sticky md:top-24 p-5 rounded-2xl border border-white/10 bg-white/10 shadow-soft">
           <div class="text-xs uppercase tracking-wide text-slate-400 mb-2">目录</div>
           <ul class="space-y-2 text-sm">
             <li><a class="hover:text-blue-600" href="#intro">导学</a></li>
@@ -50,22 +111,22 @@
         </div>
       </aside>
 
-      <article class="prose prose-slate max-w-none order-1 md:order-2">
+      <article class="prose prose-invert prose-headings:font-semibold prose-strong:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300 max-w-none order-1 md:order-2">
         <section id="intro">
           <h2>导学</h2>
           <p>伦理学关注“我们应当如何行动”。学习本单元时，请尝试辨别：不同理论如何界定“正确”的来源？它们如何处理冲突情境？以下三个问题可帮助你建立结构化的思考：</p>
           <div class="grid md:grid-cols-3 gap-4 text-sm not-prose mt-6">
-            <div class="p-4 border rounded-xl bg-slate-50">
+            <div class="p-4 border border-white/10 rounded-xl bg-white/10 shadow-soft">
               <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">聚焦</p>
               <p class="mt-2 font-semibold text-slate-800">行动动机</p>
               <p class="mt-2 text-slate-600">义务论关注行动是否出于遵守原则；功利主义关注结果；德性伦理关注品格。</p>
             </div>
-            <div class="p-4 border rounded-xl bg-slate-50">
+            <div class="p-4 border border-white/10 rounded-xl bg-white/10 shadow-soft">
               <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">聚焦</p>
               <p class="mt-2 font-semibold text-slate-800">冲突处理</p>
               <p class="mt-2 text-slate-600">当规则或结果冲突时，理论如何排序优先级？</p>
             </div>
-            <div class="p-4 border rounded-xl bg-slate-50">
+            <div class="p-4 border border-white/10 rounded-xl bg-white/10 shadow-soft">
               <p class="text-xs text-slate-400 uppercase tracking-[0.3em]">聚焦</p>
               <p class="mt-2 font-semibold text-slate-800">责任界定</p>
               <p class="mt-2 text-slate-600">讨论责任时，理论是强调个人、集体，还是品格的长期养成？</p>
@@ -77,7 +138,7 @@
           <h2>三大框架</h2>
           <p>每个伦理理论都包含核心概念、判断标准与典型批评。建议以图表方式整理，以便课堂分享。</p>
           <div class="not-prose mt-6 space-y-4">
-            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+            <div class="p-5 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
               <h3 class="text-base font-semibold text-slate-800">义务论（Deontology）</h3>
               <ul class="mt-3 space-y-2 text-sm text-slate-600">
                 <li><strong>核心主张：</strong>行动的道德性取决于是否遵守原则或义务。</li>
@@ -85,7 +146,7 @@
                 <li><strong>批评：</strong>僵化，可能忽视情境因素。</li>
               </ul>
             </div>
-            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+            <div class="p-5 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
               <h3 class="text-base font-semibold text-slate-800">功利主义（Utilitarianism）</h3>
               <ul class="mt-3 space-y-2 text-sm text-slate-600">
                 <li><strong>核心主张：</strong>最大化整体幸福或效用。</li>
@@ -93,7 +154,7 @@
                 <li><strong>批评：</strong>忽视少数权利；幸福难以量化。</li>
               </ul>
             </div>
-            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+            <div class="p-5 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
               <h3 class="text-base font-semibold text-slate-800">德性伦理（Virtue Ethics）</h3>
               <ul class="mt-3 space-y-2 text-sm text-slate-600">
                 <li><strong>核心主张：</strong>关注行动者的品格与习性。</li>
@@ -108,8 +169,8 @@
           <h2>评价对照</h2>
           <p>利用下表比较三种理论在政策、个人抉择与教育中的侧重点，最后一列写下你自己的案例或疑问。</p>
           <div class="overflow-x-auto not-prose">
-            <table class="min-w-full text-sm border border-slate-200">
-              <thead class="bg-slate-50 text-slate-600">
+            <table class="min-w-full text-sm border border-white/10">
+              <thead class="bg-white/10 text-slate-600">
                 <tr>
                   <th class="px-4 py-3 text-left font-semibold">情境</th>
                   <th class="px-4 py-3 text-left font-semibold">义务论</th>
@@ -118,7 +179,7 @@
                   <th class="px-4 py-3 text-left font-semibold">你的想法</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-200">
+              <tbody class="divide-y divide-white/10">
                 <tr>
                   <td class="px-4 py-3 text-slate-600">公共政策</td>
                   <td class="px-4 py-3">遵守权利、程序正义。</td>
@@ -154,7 +215,7 @@
             <li><strong>辩论：</strong>围绕“是否应当强制公共卫生措施”进行 8 分钟交叉提问。</li>
             <li><strong>反思：</strong>最后 5 分钟写下你认为最有说服力的理由，并说明原因。</li>
           </ol>
-          <div class="not-prose mt-6 p-4 border border-dashed rounded-2xl text-sm bg-slate-50">
+          <div class="not-prose mt-6 p-4 border border-dashed border-white/20 rounded-2xl text-sm bg-white/10 shadow-soft">
             <p class="font-medium text-slate-700">延伸任务</p>
             <p class="mt-2 text-slate-600">尝试邀请同学根据其他课程（如经济、心理学）提供的数据支持各自的立场，形成跨学科讨论。</p>
           </div>
@@ -164,12 +225,12 @@
           <h2>应用场景</h2>
           <p>将理论带入现实情境，写下每种立场的判断与可能的盲点。</p>
           <div class="not-prose grid gap-4 md:grid-cols-2">
-            <div class="p-4 border rounded-xl bg-slate-50">
+            <div class="p-4 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
               <h3 class="text-base font-semibold text-slate-800">人工智能招聘</h3>
               <p class="mt-2 text-sm text-slate-600">算法可能带来效率，也可能放大偏见。你会如何选择？</p>
               <p class="mt-3 text-xs text-slate-500">提示：比较“公平原则”、“整体效用”与“组织文化”。</p>
             </div>
-            <div class="p-4 border rounded-xl bg-slate-50">
+            <div class="p-4 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
               <h3 class="text-base font-semibold text-slate-800">公共卫生政策</h3>
               <p class="mt-2 text-sm text-slate-600">面对资源有限的疫苗分配，应优先保护谁？</p>
               <p class="mt-3 text-xs text-slate-500">提示：义务论关注权利，功利主义关注最大福祉，德性伦理关注共同体关怀。</p>
@@ -179,7 +240,7 @@
 
         <section id="quiz">
           <h2>练习</h2>
-          <details class="p-4 border rounded-xl bg-white">
+          <details class="p-4 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
             <summary class="cursor-pointer font-medium text-slate-800">单选题：哪项最能体现德性伦理的思路？</summary>
             <ol class="list-decimal pl-6 mt-3 text-sm text-slate-600">
               <li>遵守普遍原则，即使结果不佳。</li>
@@ -191,7 +252,7 @@
               <strong>答案：</strong>③。德性伦理强调品格塑造与实践智慧。
             </div>
           </details>
-          <details class="mt-4 p-4 border rounded-xl bg-white">
+          <details class="mt-4 p-4 border border-white/10 rounded-2xl bg-white/10 shadow-soft">
             <summary class="cursor-pointer font-medium text-slate-800">写作练习：在应对气候变化政策时，哪种伦理框架最具说服力？</summary>
             <div class="mt-3 text-sm text-slate-600 space-y-2">
               <p>写 200 字以内的短文，建议步骤：</p>
@@ -206,7 +267,7 @@
 
         <section id="ref">
           <h2>参考资料</h2>
-          <ul>
+          <ul class="space-y-2 text-slate-600">
             <li>Immanuel Kant, <em>Groundwork of the Metaphysics of Morals</em>。</li>
             <li>John Stuart Mill, <em>Utilitarianism</em>。</li>
             <li>Rosalind Hursthouse, “Virtue Ethics” in <em>Stanford Encyclopedia of Philosophy</em>。</li>
@@ -214,14 +275,14 @@
         </section>
 
         <section class="not-prose mt-10">
-          <div class="p-4 border rounded-2xl bg-slate-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div class="p-4 border border-white/10 rounded-2xl bg-white/10 flex flex-col gap-3 md:flex-row md:items-center md:justify-between shadow-soft">
             <div>
               <p class="text-sm font-medium text-slate-700">回顾与延伸</p>
               <p class="text-xs text-slate-500">结合“自由与决定论”与“真理与知识”，思考责任判断背后的自由假设与真理标准。</p>
             </div>
             <div class="flex gap-3 text-sm">
-              <a class="px-3 py-2 rounded-xl border border-slate-300 hover:border-blue-500 text-blue-600" href="lesson.html">自由与决定论</a>
-              <a class="px-3 py-2 rounded-xl border border-slate-300 hover:border-blue-500 text-blue-600" href="truth.html">真理与知识</a>
+              <a class="px-3 py-2 rounded-xl border border-white/10 hover:border-blue-500 text-blue-600" href="lesson.html">自由与决定论</a>
+              <a class="px-3 py-2 rounded-xl border border-white/10 hover:border-blue-500 text-blue-600" href="truth.html">真理与知识</a>
             </div>
           </div>
         </section>
