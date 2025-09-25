@@ -21,14 +21,53 @@
             sans: ['Inter','Noto Sans SC','system-ui','sans-serif'],
             serif:['Noto Serif SC','serif']
           },
-          boxShadow:{soft:'0 10px 30px -10px rgba(0,0,0,0.15)'}
+          boxShadow:{soft:'0 18px 40px -18px rgba(10,10,35,0.55)'}
         }
       }
     }
   </script>
   <style>
-    :root{--brand:230 70% 56%;--ink:222 18% 18%;--bg:220 20% 98%;--card:0 0% 100%;}
+    :root{
+      --brand:266 85% 72%;
+      --ink:220 32% 92%;
+      --bg:229 52% 6%;
+      --card:228 27% 16%;
+      --card-strong:228 30% 19%;
+      --line:227 26% 32%;
+      --muted:220 18% 72%;
+    }
+    body{
+      background: radial-gradient(120% 140% at 20% -10%, rgba(113,94,255,0.35) 0%, rgba(34,26,71,0.85) 32%, hsl(var(--bg)) 65%) fixed;
+      color: hsl(var(--ink));
+      min-height: 100vh;
+    }
     .container{max-width:1100px}
+    ::selection{background:hsl(var(--brand));color:#0e061f}
+    .bg-white{background-color:hsl(var(--card))!important}
+    .bg-white\/80{background-color:hsl(var(--card)/0.85)!important}
+    .bg-white\/70{background-color:hsl(var(--card)/0.75)!important}
+    .bg-white\/10{background-color:hsl(var(--card)/0.18)!important}
+    .bg-white\/5{background-color:hsl(var(--card)/0.12)!important}
+    .bg-brand\/5{background-color:hsl(var(--brand)/0.16)!important}
+    .bg-black\/5{background-color:hsl(var(--ink)/0.12)!important}
+    .border-black\/10{border-color:hsl(var(--line)/0.55)!important}
+    .border-black\/5{border-color:hsl(var(--line)/0.35)!important}
+    .text-black\/70{color:hsl(var(--ink)/0.78)!important}
+    .text-black\/60{color:hsl(var(--ink)/0.66)!important}
+    .text-black\/50{color:hsl(var(--ink)/0.55)!important}
+    .text-black\/40{color:hsl(var(--ink)/0.45)!important}
+    .text-slate-900{color:hsl(var(--ink))!important}
+    .text-slate-800{color:hsl(var(--ink)/0.88)!important}
+    .text-slate-700{color:hsl(var(--ink)/0.78)!important}
+    .text-slate-600{color:hsl(var(--ink)/0.66)!important}
+    .text-slate-500{color:hsl(var(--ink)/0.58)!important}
+    .text-slate-400{color:hsl(var(--ink)/0.48)!important}
+    .bg-slate-50{background:linear-gradient(140deg,hsl(var(--card)) 0%,hsl(var(--card-strong)) 100%)!important}
+    .border-slate-200{border-color:hsl(var(--line)/0.45)!important}
+    .border-slate-300{border-color:hsl(var(--line)/0.58)!important}
+    .text-blue-600{color:hsl(var(--brand))!important}
+    .hover\:text-blue-600:hover{color:hsl(var(--brand))!important}
+    .hover\:border-blue-500:hover{border-color:hsl(var(--brand))!important}
   </style>
 </head>
 <body class="bg-[hsl(var(--bg))] text-[hsl(var(--ink))] font-sans antialiased">
@@ -40,6 +79,7 @@
       <nav class="hidden md:flex items-center gap-6 text-sm">
         <a class="hover:text-brand" href="#tracks">学习路线</a>
         <a class="hover:text-brand" href="#modules">专题</a>
+        <a class="hover:text-brand" href="#toolkit">工具箱</a>
         <a class="hover:text-brand" href="#glossary">术语</a>
         <a class="hover:text-brand" href="#feedback">反馈</a>
       </nav>
@@ -48,45 +88,67 @@
   </header>
 
   <section class="container mx-auto px-4 py-16 md:py-24">
-    <div class="grid md:grid-cols-2 gap-10 items-center">
+    <div class="grid md:grid-cols-[minmax(0,1fr),420px] gap-12 items-center">
       <div>
-        <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
+        <span class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-black/50">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+          新手 & TOK 备考皆宜
+        </span>
+        <h1 class="mt-4 text-4xl md:text-5xl font-semibold leading-tight">
           用结构化的方式<br><span class="text-brand">理解哲学与TOK</span>
         </h1>
         <p class="mt-5 text-[15px] text-black/70">
           以“问题—概念—论证—反思”为主线，提供精读导引、练习解析与术语微词典，助你在有限时间内构建清晰的知识图谱。
         </p>
-        <div class="mt-6 flex gap-3">
+        <div class="mt-6 flex flex-wrap gap-3">
           <a href="lesson.html" class="px-4 py-2 rounded-xl bg-brand text-white shadow-soft">浏览专题</a>
           <a href="#tracks" class="px-4 py-2 rounded-xl border border-black/10 hover:border-black/20">学习路线</a>
+          <a href="#glossary" class="px-4 py-2 rounded-xl border border-black/10 hover:border-black/20">查术语</a>
         </div>
+        <dl class="mt-8 grid sm:grid-cols-3 gap-4 text-sm">
+          <div class="p-4 rounded-xl border border-black/10 bg-white/70 backdrop-blur">
+            <dt class="font-semibold">核心问题</dt>
+            <dd class="mt-1 text-black/60">自由、真理、责任 3 大议题</dd>
+          </div>
+          <div class="p-4 rounded-xl border border-black/10 bg-white/70 backdrop-blur">
+            <dt class="font-semibold">课程节奏</dt>
+            <dd class="mt-1 text-black/60">每单元 40-60 分钟 + 自测</dd>
+          </div>
+          <div class="p-4 rounded-xl border border-black/10 bg-white/70 backdrop-blur">
+            <dt class="font-semibold">工具支持</dt>
+            <dd class="mt-1 text-black/60">论证图 · 思考卡片 · 练习模板</dd>
+          </div>
+        </dl>
       </div>
-      <div class="bg-[hsl(var(--card))] rounded-2xl p-6 shadow-soft border border-black/5">
-        <div class="text-xs uppercase tracking-wider text-black/50 mb-2">学习进度示意</div>
-        <div class="space-y-3">
-          <div class="p-4 rounded-xl border border-black/10">
-            <div class="flex justify-between text-sm">
+      <div class="bg-[hsl(var(--card))] rounded-3xl p-6 shadow-soft border border-black/5">
+        <div class="text-xs uppercase tracking-wider text-black/50 mb-3">学习导航板</div>
+        <div class="space-y-4">
+          <div class="p-4 rounded-2xl border border-black/10">
+            <div class="flex justify-between text-sm font-medium">
               <span>自由 vs 决定论</span><span>2/5</span>
             </div>
             <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
               <div class="h-2 bg-brand w-2/5"></div>
             </div>
+            <p class="mt-3 text-xs text-black/60">本周建议：完成“案例分析 + 责任辩论”练习。</p>
           </div>
-          <div class="p-4 rounded-xl border border-black/10">
-            <div class="flex justify-between text-sm">
-              <span>真理与知识</span><span>3/5</span>
-            </div>
-            <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
-              <div class="h-2 bg-brand w-3/5"></div>
-            </div>
-          </div>
-          <div class="p-4 rounded-xl border border-black/10">
-            <div class="flex justify-between text-sm">
-              <span>伦理与责任</span><span>1/5</span>
+          <div class="p-4 rounded-2xl border border-black/10">
+            <div class="flex justify-between text-sm font-medium">
+              <span>真理与知识</span><span>1/5</span>
             </div>
             <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
               <div class="h-2 bg-brand w-1/5"></div>
             </div>
+            <p class="mt-3 text-xs text-black/60">先复习真理三大理论框架，再做知识问题写作。</p>
+          </div>
+          <div class="p-4 rounded-2xl border border-black/10">
+            <div class="flex justify-between text-sm font-medium">
+              <span>伦理与责任</span><span>0/5</span>
+            </div>
+            <div class="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
+              <div class="h-2 bg-brand w-1/12"></div>
+            </div>
+            <p class="mt-3 text-xs text-black/60">提前预习：区分义务论与结果论的论证结构。</p>
           </div>
         </div>
         <p class="mt-4 text-xs text-black/60">* 进度来自本地缓存，后续可接入账户或表单。</p>
@@ -94,31 +156,222 @@
     </div>
   </section>
 
-  <section id="modules" class="container mx-auto px-4 py-10">
-    <h2 class="text-2xl font-semibold mb-6">核心专题</h2>
-    <div class="grid md:grid-cols-3 gap-6">
+  <section id="philosophy-intro" class="bg-white/80 border-y border-black/5">
+    <div class="container mx-auto px-4 py-16 md:py-20">
+      <div class="grid md:grid-cols-[minmax(0,1fr),420px] gap-10 items-center">
+        <div>
+          <span class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-black/50">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+            哲学导入
+          </span>
+          <h2 class="mt-4 text-2xl md:text-3xl font-semibold">12 分钟快速认识“哲学在学什么”</h2>
+          <p class="mt-4 text-[15px] text-black/70">建议先看这段导入视频，了解“哲学问题如何生成”“论证与反驳的基本套路”，再回到各专题拆解具体议题。你可以在观看时尝试记录：</p>
+          <ul class="mt-4 space-y-3 text-sm text-black/70 list-disc list-inside">
+            <li>视频中出现的核心问题（例如“自由是否存在？”）。</li>
+            <li>讲者如何区分立场、前提与结论。</li>
+            <li>有哪些现实例子可以连接到你的 TOK 或课堂经验。</li>
+          </ul>
+          <p class="mt-4 text-sm text-black/60">准备好之后，再进入下方“学习路线”或直接选择一个专题深入。</p>
+        </div>
+        <div class="not-prose">
+          <div class="aspect-video rounded-3xl overflow-hidden border border-black/5 shadow-soft">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/tiZ5tb8Idlg" title="哲学导入视频" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <p class="mt-3 text-xs text-black/50">* 如果学校网络无法访问 YouTube，可复制链接到其他平台或提前下载。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tracks" class="container mx-auto px-4 py-16 md:py-20">
+    <div class="md:w-4/5">
+      <h2 class="text-2xl md:text-3xl font-semibold">三步式学习路线</h2>
+      <p class="mt-3 text-black/70">通过“打基础 → 拆论证 → 迁移写作”三段学习节奏，让抽象哲学概念与 TOK 真实任务建立联结。</p>
+    </div>
+    <div class="mt-10 grid md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft">
+        <div class="text-xs font-semibold text-brand uppercase tracking-[0.2em] mb-2">Step 01</div>
+        <h3 class="text-lg font-semibold">概念预热</h3>
+        <p class="mt-2 text-sm text-black/70">30 分钟精读导学，掌握关键词及经典争议，完成“术语配对”练习。</p>
+        <ul class="mt-4 space-y-2 text-xs text-black/60">
+          <li>· 导入问题卡</li>
+          <li>· 关键术语速览</li>
+          <li>· 推荐导读/视频</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft">
+        <div class="text-xs font-semibold text-brand uppercase tracking-[0.2em] mb-2">Step 02</div>
+        <h3 class="text-lg font-semibold">论证拆解</h3>
+        <p class="mt-2 text-sm text-black/70">使用论证图，比较不同立场的前提、结论与可反驳点，训练批判性阅读。</p>
+        <ul class="mt-4 space-y-2 text-xs text-black/60">
+          <li>· 结构化笔记模板</li>
+          <li>· 可视化论证图示例</li>
+          <li>· 延伸思考提示</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft">
+        <div class="text-xs font-semibold text-brand uppercase tracking-[0.2em] mb-2">Step 03</div>
+        <h3 class="text-lg font-semibold">迁移表达</h3>
+        <p class="mt-2 text-sm text-black/70">结合 TOK、课堂讨论或写作任务，完成案例分析与反思提问，积累可用论点。</p>
+        <ul class="mt-4 space-y-2 text-xs text-black/60">
+          <li>· 案例练习库</li>
+          <li>· TOK 提示语</li>
+          <li>· 同伴反馈指引</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-12 grid md:grid-cols-[1fr,280px] gap-8 items-start">
+      <div class="p-6 rounded-3xl bg-brand/5 border border-brand/20">
+        <h3 class="text-lg font-semibold">一周推荐节奏</h3>
+        <ol class="mt-4 space-y-3 text-sm text-black/70">
+          <li><strong>Day 1-2：</strong>完成导学部分，制作术语卡片。</li>
+          <li><strong>Day 3：</strong>梳理论证图，尝试写 150 字立场总结。</li>
+          <li><strong>Day 4：</strong>做案例练习，记录可能的反驳。</li>
+          <li><strong>Day 5：</strong>整理反思问题，准备课堂/展示发言。</li>
+        </ol>
+      </div>
+      <div class="p-6 rounded-3xl bg-white border border-black/5 shadow-soft text-sm text-black/70">
+        <h3 class="text-base font-semibold text-brand">快速自测</h3>
+        <p class="mt-2">只需 5 分钟：回答 3 个核心问题即可检测你是否抓住了本单元的重点。</p>
+        <a class="mt-4 inline-flex items-center gap-1 text-brand font-medium" href="#glossary">前往 →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules" class="container mx-auto px-4 py-16">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-semibold">核心专题</h2>
+        <p class="mt-2 text-black/70">每个专题均包含导学、论证图、练习与参考资料，可独立使用或串联为 mini-course。</p>
+      </div>
+      <a class="text-sm text-brand underline decoration-dotted" href="#tracks">如何安排顺序？</a>
+    </div>
+    <div class="mt-8 grid md:grid-cols-3 gap-6">
       <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="lesson.html">
         <div class="text-brand text-xs font-semibold mb-2">Module 01</div>
         <h3 class="text-lg font-semibold">自由与决定论</h3>
-        <p class="mt-2 text-sm text-black/70">强决定论、弱决定论与非决定论的结构化比较；经典论证与现实应用。</p>
+        <p class="mt-2 text-sm text-black/70">比较强/弱决定论与非决定论的论证结构，讨论责任归属与道德判断。</p>
         <div class="mt-4 text-sm text-brand">进入 →</div>
       </a>
-      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="#">
+      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="truth.html">
         <div class="text-brand text-xs font-semibold mb-2">Module 02</div>
         <h3 class="text-lg font-semibold">真理与知识</h3>
-        <p class="mt-2 text-sm text-black/70">符合/融贯/实用与语义理论；盖梯尔问题与TOK知识问题。</p>
+        <p class="mt-2 text-sm text-black/70">梳理符合/融贯/实用理论与盖梯尔问题，连接 TOK “知识问题”写作。</p>
         <div class="mt-4 text-sm text-brand">进入 →</div>
       </a>
-      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="#">
+      <a class="group p-6 rounded-2xl bg-[hsl(var(--card))] border border-black/5 shadow-soft hover:-translate-y-0.5 transition" href="ethics.html">
         <div class="text-brand text-xs font-semibold mb-2">Module 03</div>
         <h3 class="text-lg font-semibold">伦理与责任</h3>
-        <p class="mt-2 text-sm text-black/70">康德义务论、功利主义与德性伦理的张力与调和。</p>
+        <p class="mt-2 text-sm text-black/70">对照康德义务论、功利主义与德性伦理，聚焦行动理由与公共讨论。</p>
         <div class="mt-4 text-sm text-brand">进入 →</div>
       </a>
     </div>
   </section>
 
-  <section class="container mx-auto px-4 py-14">
+  <section id="toolkit" class="container mx-auto px-4 py-16 md:py-20">
+    <div class="md:w-3/4">
+      <h2 class="text-2xl md:text-3xl font-semibold">学习工具箱</h2>
+      <p class="mt-3 text-black/70">把抽象概念落地为可操作的学习行为，可直接打印或复制到你的笔记应用中。</p>
+    </div>
+    <div class="mt-10 grid md:grid-cols-4 gap-6">
+      <div class="p-5 rounded-2xl bg-white border border-black/5 shadow-soft text-sm">
+        <h3 class="font-semibold">论证图模板</h3>
+        <p class="mt-2 text-black/70">逐步填充前提、结论、反驳与例证，适用于任何哲学议题。</p>
+        <a class="mt-4 inline-flex items-center gap-1 text-brand" href="lesson.html#map">查看示例 →</a>
+      </div>
+      <div class="p-5 rounded-2xl bg-white border border-black/5 shadow-soft text-sm">
+        <h3 class="font-semibold">思考卡片</h3>
+        <p class="mt-2 text-black/70">包含“如果…那么…？”等提示语，帮助拓展立场与反思。</p>
+        <span class="mt-4 inline-flex items-center gap-1 text-brand">附赠下载即将上线</span>
+      </div>
+      <div class="p-5 rounded-2xl bg-white border border-black/5 shadow-soft text-sm">
+        <h3 class="font-semibold">TOK 写作脚手架</h3>
+        <p class="mt-2 text-black/70">将哲学概念转化为知识问题与现实情境的写作提示。</p>
+        <a class="mt-4 inline-flex items-center gap-1 text-brand" href="truth.html#tok">预览 →</a>
+      </div>
+      <div class="p-5 rounded-2xl bg-white border border-black/5 shadow-soft text-sm">
+        <h3 class="font-semibold">课堂讨论指南</h3>
+        <p class="mt-2 text-black/70">提供角色扮演、立场辩论和同伴反馈建议，提升参与度。</p>
+        <a class="mt-4 inline-flex items-center gap-1 text-brand" href="ethics.html#discussion">课堂活动 →</a>
+      </div>
+    </div>
+    <div class="mt-12 p-6 rounded-3xl bg-brand text-white shadow-soft">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h3 class="text-lg font-semibold">每月加餐 · 哲学微讲义</h3>
+          <p class="mt-2 text-sm text-white/80">订阅即获取课堂可打印讲义与案例题库，率先知道新专题上线。</p>
+        </div>
+        <a class="inline-flex items-center justify-center px-5 py-2 rounded-xl bg-white/10 border border-white/20 text-sm" href="https://forms.gle/">登记兴趣</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="glossary" class="container mx-auto px-4 py-16 md:py-20">
+    <div class="md:w-3/4">
+      <h2 class="text-2xl md:text-3xl font-semibold">术语微词典</h2>
+      <p class="mt-3 text-black/70">输入关键词快速筛选，或直接浏览精选的 8 个高频概念。所有术语均附带 TOK 对应问题。</p>
+    </div>
+    <div class="mt-8 md:flex md:items-center md:justify-between gap-4">
+      <label class="flex-1 relative max-w-xl">
+        <span class="sr-only">搜索术语</span>
+        <input id="glossary-search" type="search" placeholder="搜索术语或英文关键词，例如 determinism" class="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm shadow-soft focus:border-brand focus:ring-2 focus:ring-brand/40">
+      </label>
+      <p class="mt-3 md:mt-0 text-xs text-black/50">大小写不敏感 · 支持中英文搜索</p>
+    </div>
+    <div id="glossary-grid" class="mt-10 grid md:grid-cols-2 gap-6">
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="决定论 determinism 因果 必然 预测">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 01</div>
+        <h3 class="text-lg font-semibold">决定论 Determinism</h3>
+        <p class="mt-2 text-sm text-black/70">认为一切事件均由先前的因果链决定，因此理论上可以预测未来状态。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：若世界完全可预测，我们的知识主张是否仍有意义？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="相容论 compatibilism 自由 责任">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 02</div>
+        <h3 class="text-lg font-semibold">相容论 Compatibilism</h3>
+        <p class="mt-2 text-sm text-black/70">主张因果决定与自由意志并非矛盾，只要行动来自主体真实意志。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：我们如何区分“内在意志”与社会化带来的欲望？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="非决定论 libertarianism 可能性 随机">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 03</div>
+        <h3 class="text-lg font-semibold">非决定论 Libertarianism</h3>
+        <p class="mt-2 text-sm text-black/70">认为并非所有事件都受因果律约束，人类仍有真正意义的选择可能。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：随机性能够构成责任的基础吗？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="符合论 correspondence 真理 事实 现实">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 04</div>
+        <h3 class="text-lg font-semibold">符合论 Correspondence</h3>
+        <p class="mt-2 text-sm text-black/70">真理即命题与客观事实的符合，强调现实世界的存在与描述。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：事实如何被证成？当事实有争议时怎么办？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="融贯论 coherence 真理 系统 正当化">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 05</div>
+        <h3 class="text-lg font-semibold">融贯论 Coherence</h3>
+        <p class="mt-2 text-sm text-black/70">认为真理由命题之间的融贯性决定，一个陈述若能与整体体系一致即为真。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：不同知识体系之间的冲突如何调和？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="实用主义 pragmatism 真理 作用 结果">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 06</div>
+        <h3 class="text-lg font-semibold">实用主义 Pragmatism</h3>
+        <p class="mt-2 text-sm text-black/70">主张“真理”取决于命题在实践中的有效性，关注信念的作用与后果。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：有效的信念一定可靠么？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="义务论 deontology 康德 普遍律">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 07</div>
+        <h3 class="text-lg font-semibold">义务论 Deontology</h3>
+        <p class="mt-2 text-sm text-black/70">强调行动的道德性取决于是否遵循原则或义务，而非结果。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：原则是否会与情境经验冲突？</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-black/5 shadow-soft" data-term-card data-search="功利主义 utilitarianism 最大幸福 结果">
+        <div class="text-xs uppercase tracking-[0.25em] text-brand mb-2">Term 08</div>
+        <h3 class="text-lg font-semibold">功利主义 Utilitarianism</h3>
+        <p class="mt-2 text-sm text-black/70">评价行动的道德性时，以最大化整体幸福或效用为标准。</p>
+        <p class="mt-4 text-xs text-black/60">TOK 提问：幸福如何被量化与比较？</p>
+      </article>
+    </div>
+    <p id="glossary-empty" class="mt-6 hidden text-sm text-black/50">未找到匹配的术语，请尝试其他关键词或查看全部列表。</p>
+  </section>
+
+  <section class="container mx-auto px-4 pb-16">
     <figure class="p-8 md:p-12 rounded-3xl bg-white border border-black/5 shadow-soft">
       <blockquote class="text-xl md:text-2xl font-serif leading-relaxed">
         “我们并不是拥有真理，而是在追求中不断修正；所谓‘确定’，往往只是临时的停靠。”
@@ -127,13 +380,49 @@
     </figure>
   </section>
 
-  <footer id="feedback" class="border-t border-black/5">
-    <div class="container mx-auto px-4 py-10 text-sm text-black/60">
-      <div class="md:flex items-center justify-between">
-        <p>© 2025 PhiloHub · CC BY-NC 内容许可</p>
-        <a class="underline hover:text-brand" href="https://forms.gle/">提交反馈（Google表单）</a>
+  <footer id="feedback" class="border-t border-black/5 bg-white/70">
+    <div class="container mx-auto px-4 py-12 grid md:grid-cols-2 gap-10 text-sm text-black/70">
+      <div class="space-y-4">
+        <p class="text-base font-semibold text-[hsl(var(--ink))]">© 2025 PhiloHub · CC BY-NC 内容许可</p>
+        <p>欢迎将本项目用于课堂教学，引用时请保留出处。若你愿意分享课堂案例，欢迎联系。</p>
+        <a class="inline-flex items-center gap-1 text-brand" href="mailto:hello@philo-hub.io">hello@philo-hub.io</a>
+      </div>
+      <div class="space-y-4">
+        <p class="text-base font-semibold text-[hsl(var(--ink))]">反馈与更新</p>
+        <p>填写表单告诉我们你需要的内容或课程节奏，我们会在更新日志中优先安排。</p>
+        <a class="inline-flex items-center gap-1 text-brand" href="https://forms.gle/">提交反馈（Google 表单） →</a>
+        <p class="text-xs text-black/50">下次更新预告：新增“政治哲学”专题、加入可下载的课堂活动表。</p>
       </div>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.querySelector('#glossary-search');
+      const cards = Array.from(document.querySelectorAll('[data-term-card]'));
+      const emptyState = document.querySelector('#glossary-empty');
+      if (!input || cards.length === 0) return;
+
+      const filter = () => {
+        const query = input.value.trim().toLowerCase();
+        let visibleCount = 0;
+        cards.forEach(card => {
+          const haystack = (card.dataset.search || '').toLowerCase();
+          if (!query || haystack.includes(query)) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        if (emptyState) {
+          emptyState.classList.toggle('hidden', visibleCount !== 0);
+        }
+      };
+
+      filter();
+      input.addEventListener('input', filter);
+    });
+  </script>
 </body>
 </html>
