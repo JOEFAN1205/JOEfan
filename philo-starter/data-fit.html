@@ -55,12 +55,12 @@
           自主输入数据，<span class="text-indigo-500">一键生成</span><br>拟合曲线与全面分析
         </h1>
         <p class="mt-5 text-slate-600 leading-relaxed">
-          支持 1-5 次多项式拟合，实时输出拟合曲线、残差指标、关键统计与交互式图表。
+          支持 0.5 为步长的幂次拟合、批量粘贴数据、交互式轴线控制以及实时残差分析。
           在课堂演示、科研速算或竞赛准备中，快速验证你的假设。
         </p>
         <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-500">
-          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">多项式拟合</span>
-          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">自定义数据输入</span>
+          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">半次幂拟合</span>
+          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">批量粘贴数据</span>
           <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">指标一览</span>
         </div>
       </div>
@@ -89,9 +89,12 @@
 
     <section id="input" class="mt-14 grid lg:grid-cols-[1.1fr,0.9fr] gap-10">
       <div class="bg-white/90 rounded-3xl border border-white shadow-xl shadow-indigo-100/80 p-8 space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-xl font-semibold text-slate-900">数据输入</h2>
-          <button id="add-row" class="text-sm px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-500">+ 添加行</button>
+          <div class="flex items-center gap-2">
+            <button id="toggle-bulk" class="text-sm px-3 py-1.5 rounded-lg border border-indigo-200/80 bg-indigo-50/60 text-indigo-600 hover:border-indigo-300 hover:bg-indigo-100">批量粘贴</button>
+            <button id="add-row" class="text-sm px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-500">+ 添加行</button>
+          </div>
         </div>
         <div class="overflow-hidden rounded-2xl border border-slate-100">
           <table class="min-w-full divide-y divide-slate-100">
@@ -107,11 +110,31 @@
             </tbody>
           </table>
         </div>
+        <div id="bulk-panel" class="hidden rounded-2xl border border-dashed border-indigo-200 bg-indigo-50/60 p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-medium text-indigo-600">批量粘贴数据</h3>
+            <button id="bulk-close" class="text-xs text-indigo-400 hover:text-indigo-600">收起</button>
+          </div>
+          <textarea id="bulk-textarea" rows="4" class="w-full rounded-xl border border-indigo-200/70 bg-white/90 px-3 py-2 text-sm text-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200" placeholder="每行输入 X 和 Y，可使用逗号、空格或制表符分隔。例如：\n1 3.2\n2 4.6\n3 7.1"></textarea>
+          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+            <button id="bulk-apply" class="px-3 py-1.5 rounded-lg bg-indigo-500 text-white shadow-indigo-200/60 shadow-lg hover:bg-indigo-600 text-sm">解析并填充</button>
+            <span>会覆盖当前表格数据，支持从 Excel/CSV 中直接粘贴两列。</span>
+          </div>
+        </div>
         <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600">
           <label class="flex flex-col gap-2">
-            <span class="text-xs uppercase tracking-wide text-slate-500">拟合阶数</span>
-            <input id="degree" type="range" min="1" max="5" value="2" class="accent-indigo-500">
-            <span class="text-xs text-slate-500">当前阶数：<span id="degree-label" class="text-indigo-500 font-medium">2</span> 次多项式</span>
+            <span class="text-xs uppercase tracking-wide text-slate-500">最高幂次</span>
+            <input id="max-power" type="range" min="0.5" max="6" step="0.5" value="2" class="accent-indigo-500">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+              <span>当前包含 0 ~ <span id="power-label" class="text-indigo-500 font-medium">2</span> 次幂</span>
+              <label class="flex items-center gap-2">
+                <span>幂次步长</span>
+                <select id="power-step" class="rounded-lg border border-slate-200 bg-white/90 px-2 py-1 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200 text-slate-600">
+                  <option value="0.5" selected>0.5</option>
+                  <option value="1">1</option>
+                </select>
+              </label>
+            </div>
           </label>
           <label class="flex flex-col gap-2">
             <span class="text-xs uppercase tracking-wide text-slate-500">插值/拟合点数</span>
@@ -127,7 +150,7 @@
           <button id="run-fit" class="px-4 py-2 rounded-xl bg-indigo-500 text-white text-sm font-medium shadow-lg shadow-indigo-200/60 hover:bg-indigo-600">生成拟合</button>
           <button id="reset" class="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-600 hover:text-indigo-500 hover:border-indigo-300">清空数据</button>
         </div>
-        <p class="text-xs text-slate-500">提示：至少需要 <span class="font-semibold">阶数+1</span> 个有效数据点。可通过粘贴 Excel/CSV 中的两列数据快速填充。</p>
+        <p class="text-xs text-slate-500">提示：至少需要与幂次数量相同的有效数据点；若使用半次幂，请确保 X ≥ 0 以获得实数结果。可通过粘贴 Excel/CSV 中的两列数据快速填充。</p>
       </div>
 
       <div id="insight" class="space-y-6">
@@ -176,7 +199,19 @@
           <h2 class="text-xl font-semibold text-slate-900">拟合图像</h2>
           <p class="text-sm text-slate-600">散点图展示原始数据，平滑曲线为拟合结果。可悬停查看每个点的具体数值。</p>
         </div>
-        <div id="fit-summary" class="text-sm text-slate-500"></div>
+        <div class="flex flex-col items-end gap-3 text-sm text-slate-500">
+          <div id="fit-summary" class="text-right"></div>
+          <div class="flex flex-wrap items-center justify-end gap-3 text-xs">
+            <label class="flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 px-3 py-1 text-slate-500 hover:border-indigo-200">
+              <input id="axis-x-zero" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300 text-indigo-500 focus:ring-indigo-300">
+              X 轴从 0 开始
+            </label>
+            <label class="flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 px-3 py-1 text-slate-500 hover:border-indigo-200">
+              <input id="axis-y-zero" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300 text-indigo-500 focus:ring-indigo-300">
+              Y 轴从 0 开始
+            </label>
+          </div>
+        </div>
       </div>
       <div class="mt-6 h-[420px]">
         <canvas id="fit-chart"></canvas>
@@ -212,8 +247,6 @@
   <script>
     const dataBody = document.getElementById('data-body');
     const rowTemplate = document.getElementById('row-template');
-    const degreeSlider = document.getElementById('degree');
-    const degreeLabel = document.getElementById('degree-label');
     const runFitBtn = document.getElementById('run-fit');
     const resetBtn = document.getElementById('reset');
     const addRowBtn = document.getElementById('add-row');
@@ -227,8 +260,20 @@
     const coefTable = document.getElementById('coef-table');
     const residualTable = document.getElementById('residual-table');
     const fitSummary = document.getElementById('fit-summary');
+    const maxPowerSlider = document.getElementById('max-power');
+    const powerLabel = document.getElementById('power-label');
+    const powerStepSelect = document.getElementById('power-step');
+    const toggleBulkBtn = document.getElementById('toggle-bulk');
+    const bulkPanel = document.getElementById('bulk-panel');
+    const bulkTextarea = document.getElementById('bulk-textarea');
+    const bulkApplyBtn = document.getElementById('bulk-apply');
+    const bulkCloseBtn = document.getElementById('bulk-close');
+    const axisXZeroCheckbox = document.getElementById('axis-x-zero');
+    const axisYZeroCheckbox = document.getElementById('axis-y-zero');
     const ctx = document.getElementById('fit-chart').getContext('2d');
     let chartInstance;
+    let lastFit = null;
+    const axisOptions = { xZero: false, yZero: false };
 
     function addRow(x = '', y = '') {
       const clone = rowTemplate.content.cloneNode(true);
@@ -264,42 +309,49 @@
       return points;
     }
 
-    function computePowerSums(points, maxPower) {
-      const sums = new Array(maxPower + 1).fill(0);
-      for (const { x } of points) {
-        let term = 1;
-        for (let k = 0; k <= maxPower; k++) {
-          sums[k] += term;
-          term *= x;
-        }
+    function formatNumber(value, digits = 4) {
+      if (!Number.isFinite(value)) return '—';
+      const absVal = Math.abs(value);
+      if (absVal !== 0 && (absVal < 0.001 || absVal >= 10000)) {
+        return value.toExponential(2);
       }
-      return sums;
+      return Number(value).toFixed(digits);
     }
 
-    function leastSquares(points, degree) {
-      const n = degree + 1;
-      const matrix = Array.from({ length: n }, () => new Array(n).fill(0));
-      const rhs = new Array(n).fill(0);
-      const sums = computePowerSums(points, degree * 2);
-      for (let row = 0; row < n; row++) {
-        for (let col = 0; col < n; col++) {
-          matrix[row][col] = sums[row + col];
-        }
+    function formatPower(power) {
+      if (Math.abs(power - Math.round(power)) < 1e-8) {
+        return String(Math.round(power));
       }
-      for (let i = 0; i < n; i++) {
-        let sum = 0;
-        for (const { x, y } of points) {
-          sum += y * Math.pow(x, i);
-        }
-        rhs[i] = sum;
+      return power.toFixed(1).replace(/\.0$/, '');
+    }
+
+    function buildPowerSequence(maxPower, step) {
+      const steps = Math.max(1, Math.round(maxPower / step));
+      const powers = [0];
+      for (let i = 1; i <= steps; i++) {
+        powers.push(Number((i * step).toFixed(4)));
       }
-      return gaussianElimination(matrix, rhs);
+      return powers;
+    }
+
+    function isIntegerPower(power) {
+      return Math.abs(power - Math.round(power)) < 1e-8;
+    }
+
+    function powChecked(base, exponent) {
+      if (base < 0 && !isIntegerPower(exponent)) {
+        throw new Error('检测到负数 X 与非整数幂的组合，请改用整数幂或调整数据');
+      }
+      const value = Math.pow(base, exponent);
+      if (!Number.isFinite(value)) {
+        throw new Error('存在无法计算的幂次，请检查数据范围');
+      }
+      return value;
     }
 
     function gaussianElimination(A, b) {
       const n = A.length;
       for (let i = 0; i < n; i++) {
-        // pivot
         let maxRow = i;
         for (let j = i + 1; j < n; j++) {
           if (Math.abs(A[j][i]) > Math.abs(A[maxRow][i])) maxRow = j;
@@ -322,11 +374,31 @@
       return b;
     }
 
-    function evaluatePolynomial(coeffs, x) {
-      return coeffs.reduce((acc, coeff, idx) => acc + coeff * Math.pow(x, idx), 0);
+    function leastSquares(points, powers) {
+      const n = powers.length;
+      const matrix = Array.from({ length: n }, () => new Array(n).fill(0));
+      const rhs = new Array(n).fill(0);
+      points.forEach(({ x, y }) => {
+        const basis = powers.map(power => powChecked(x, power));
+        for (let row = 0; row < n; row++) {
+          rhs[row] += basis[row] * y;
+          for (let col = row; col < n; col++) {
+            const product = basis[row] * basis[col];
+            matrix[row][col] += product;
+            if (col !== row) {
+              matrix[col][row] += product;
+            }
+          }
+        }
+      });
+      return gaussianElimination(matrix, rhs);
     }
 
-    function computeMetrics(points, coeffs) {
+    function evaluatePolynomial(coeffs, powers, x) {
+      return coeffs.reduce((acc, coeff, idx) => acc + coeff * powChecked(x, powers[idx]), 0);
+    }
+
+    function computeMetrics(points, coeffs, powers) {
       const yMean = points.reduce((sum, p) => sum + p.y, 0) / points.length;
       let ssTot = 0;
       let ssRes = 0;
@@ -334,7 +406,7 @@
       let squaredErrorSum = 0;
       const predictions = [];
       for (const point of points) {
-        const predicted = evaluatePolynomial(coeffs, point.x);
+        const predicted = evaluatePolynomial(coeffs, powers, point.x);
         predictions.push(predicted);
         const residual = point.y - predicted;
         ssTot += Math.pow(point.y - yMean, 2);
@@ -348,40 +420,42 @@
       return { r2, rmse, mae, predictions };
     }
 
-    function formatNumber(value, digits = 4) {
-      if (!Number.isFinite(value)) return '—';
-      const absVal = Math.abs(value);
-      if (absVal !== 0 && (absVal < 0.001 || absVal >= 10000)) {
-        return value.toExponential(2);
-      }
-      return value.toFixed(digits);
-    }
-
-    function buildEquation(coeffs) {
+    function buildEquation(coeffs, powers) {
       return coeffs
         .map((coeff, idx) => {
           const formatted = formatNumber(coeff, 4);
           if (idx === 0) return `${formatted}`;
           const sign = coeff >= 0 ? '+' : '';
-          const power = idx === 1 ? 'x' : `x^${idx}`;
-          return `${sign}${formatted}${power}`;
+          const power = powers[idx];
+          const symbol = Math.abs(power - 1) < 1e-8 ? 'x' : `x^${formatPower(power)}`;
+          return `${sign}${formatted}${symbol}`;
         })
         .join(' ');
     }
 
-    function updateMetrics(metrics, count, degree) {
+    function updateMetrics(metrics, count, powers) {
+      const highestPower = powers[powers.length - 1];
+      const hasFraction = powers.some(power => !isIntegerPower(power));
+      const stepLabel = powers.length > 1 ? formatPower(powers[1]) : '—';
+      const summaryParts = [`最高 ${formatPower(highestPower)} 次`];
+      if (stepLabel !== '—') summaryParts.push(`步长 ${stepLabel}`);
+      if (hasFraction) summaryParts.push('包含半次幂');
       metricR2.textContent = formatNumber(metrics.r2, 3);
       metricRmse.textContent = formatNumber(metrics.rmse, 3);
       metricMae.textContent = formatNumber(metrics.mae, 3);
       metricCount.textContent = count;
-      fitSummary.textContent = `已基于 ${count} 个样本点生成 ${degree} 次拟合曲线。`;
+      fitSummary.textContent = `已基于 ${count} 个样本点拟合 ${powers.length} 个幂次（${summaryParts.join('，')}）。`;
     }
 
-    function updateCoefTable(coeffs) {
+    function updateCoefTable(coeffs, powers) {
       coefTable.innerHTML = '';
       coeffs.forEach((value, idx) => {
         const row = document.createElement('tr');
-        row.innerHTML = `<td class="py-2 pr-6 text-slate-500">a<sub>${idx}</sub></td><td class="py-2">${formatNumber(value, 6)}</td>`;
+        let label = '常数项';
+        if (idx !== 0) {
+          label = Math.abs(powers[idx] - 1) < 1e-8 ? 'x' : `x^${formatPower(powers[idx])}`;
+        }
+        row.innerHTML = `<td class="py-2 pr-6 text-slate-500">${label}</td><td class="py-2">${formatNumber(value, 6)}</td>`;
         coefTable.appendChild(row);
       });
     }
@@ -402,20 +476,26 @@
       });
     }
 
-    function updateEquation(coeffs) {
-      equationEl.innerHTML = `f(x) = <span class="font-mono text-indigo-600">${buildEquation(coeffs)}</span>`;
+    function updateEquation(coeffs, powers) {
+      equationEl.innerHTML = `f(x) = <span class="font-mono text-indigo-600">${buildEquation(coeffs, powers)}</span>`;
     }
 
-    function renderChart(points, coeffs, sampleCount) {
+    function renderChart(points, coeffs, powers, sampleCount) {
+      if (!points.length) return;
       const sortedPoints = [...points].sort((a, b) => a.x - b.x);
       const minX = sortedPoints[0].x;
       const maxX = sortedPoints[sortedPoints.length - 1].x;
-      const step = (maxX - minX) / (sampleCount - 1 || 1);
       const fitData = [];
-      for (let i = 0; i < sampleCount; i++) {
-        const x = minX + i * step;
-        const y = evaluatePolynomial(coeffs, x);
-        fitData.push({ x, y });
+      if (maxX === minX) {
+        const y = evaluatePolynomial(coeffs, powers, minX);
+        fitData.push({ x: minX, y });
+      } else {
+        const step = (maxX - minX) / (sampleCount - 1 || 1);
+        for (let i = 0; i < sampleCount; i++) {
+          const x = minX + i * step;
+          const y = evaluatePolynomial(coeffs, powers, x);
+          fitData.push({ x, y });
+        }
       }
       if (chartInstance) {
         chartInstance.destroy();
@@ -452,10 +532,16 @@
           scales: {
             x: {
               type: 'linear',
+              beginAtZero: axisOptions.xZero,
+              suggestedMin: axisOptions.xZero ? 0 : undefined,
+              min: axisOptions.xZero ? 0 : undefined,
               title: { display: true, text: 'X', color: '#475569' },
               grid: { color: 'rgba(148,163,184,0.2)' }
             },
             y: {
+              beginAtZero: axisOptions.yZero,
+              suggestedMin: axisOptions.yZero ? 0 : undefined,
+              min: axisOptions.yZero ? 0 : undefined,
               title: { display: true, text: 'Y', color: '#475569' },
               grid: { color: 'rgba(148,163,184,0.2)' }
             }
@@ -486,22 +572,41 @@
       });
     }
 
+    function updatePowerLabel() {
+      const step = parseFloat(powerStepSelect.value);
+      let value = parseFloat(maxPowerSlider.value);
+      if (!Number.isFinite(value) || value < step) {
+        value = step;
+      }
+      const steps = Math.round(value / step);
+      const highest = Math.max(step, steps * step);
+      const max = parseFloat(maxPowerSlider.max);
+      const clamped = Math.min(highest, max);
+      maxPowerSlider.value = clamped;
+      powerLabel.textContent = formatPower(clamped);
+    }
+
     function handleFit() {
+      syncPowerSlider();
+      updatePowerLabel();
       const points = parseData();
-      const degree = parseInt(degreeSlider.value, 10);
-      if (points.length < degree + 1) {
-        alert(`需要至少 ${degree + 1} 个有效数据点（当前仅 ${points.length} 个）。`);
+      const maxPower = parseFloat(maxPowerSlider.value);
+      const step = parseFloat(powerStepSelect.value);
+      const powers = buildPowerSequence(maxPower, step);
+      if (points.length < powers.length) {
+        alert(`需要至少 ${powers.length} 个有效数据点（当前仅 ${points.length} 个）。`);
         return;
       }
       const sampleCount = parseInt(sampleCountSelect.value, 10);
       try {
-        const coeffs = leastSquares(points, degree);
-        const metrics = computeMetrics(points, coeffs);
-        updateMetrics(metrics, points.length, degree);
-        updateCoefTable(coeffs);
+        const coeffs = leastSquares(points, powers);
+        const metrics = computeMetrics(points, coeffs, powers);
+        updateMetrics(metrics, points.length, powers);
+        updateCoefTable(coeffs, powers);
         updateResidualTable(points, metrics.predictions);
-        updateEquation(coeffs);
-        renderChart(points, coeffs, sampleCount);
+        updateEquation(coeffs, powers);
+        renderChart(points, coeffs, powers, sampleCount);
+        lastFit = { points, coeffs, powers, sampleCount };
       } catch (error) {
         alert('拟合失败：' + error.message);
       }
@@ -518,6 +623,16 @@
       metricCount.textContent = '—';
       equationEl.textContent = '等待生成…';
       fitSummary.textContent = '';
+      syncPowerSlider();
+      updatePowerLabel();
+      bulkTextarea.value = '';
+      bulkPanel.classList.add('hidden');
+      toggleBulkBtn.textContent = '批量粘贴';
+      axisXZeroCheckbox.checked = false;
+      axisYZeroCheckbox.checked = false;
+      axisOptions.xZero = false;
+      axisOptions.yZero = false;
+      lastFit = null;
       if (chartInstance) {
         chartInstance.destroy();
         chartInstance = null;
@@ -526,29 +641,99 @@
 
     function loadDemo() {
       const demoData = [
-        { x: -4, y: 23.1 },
-        { x: -3, y: 12.8 },
-        { x: -2, y: 7.6 },
-        { x: -1, y: 6.2 },
-        { x: 0, y: 7.5 },
-        { x: 1, y: 11.9 },
-        { x: 2, y: 19.2 },
-        { x: 3, y: 29.7 },
-        { x: 4, y: 43.5 }
+        { x: 1, y: 2 },
+        { x: 2, y: 4.5 },
+        { x: 3, y: 7.9 },
+        { x: 4, y: 12.8 },
+        { x: 5, y: 18.6 },
+        { x: 6, y: 25.1 },
+        { x: 7, y: 32.5 },
+        { x: 8, y: 40.7 }
       ];
       dataBody.innerHTML = '';
       demoData.forEach(point => addRow(point.x, point.y));
     }
 
-    degreeSlider.addEventListener('input', () => {
-      degreeLabel.textContent = degreeSlider.value;
+    function parseBulkInput(text) {
+      const lines = text.split(/\n+/);
+      const pairs = [];
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+        const parts = trimmed.split(/[\s,;]+/).filter(Boolean);
+        if (parts.length < 2) return;
+        const x = parseFloat(parts[0]);
+        const y = parseFloat(parts[1]);
+        if (!Number.isNaN(x) && !Number.isNaN(y)) {
+          pairs.push({ x, y });
+        }
+      });
+      return pairs;
+    }
+
+    function toggleBulkPanel(forceHidden) {
+      const shouldHide = typeof forceHidden === 'boolean' ? forceHidden : !bulkPanel.classList.contains('hidden');
+      if (shouldHide) {
+        bulkPanel.classList.add('hidden');
+        toggleBulkBtn.textContent = '批量粘贴';
+      } else {
+        bulkPanel.classList.remove('hidden');
+        toggleBulkBtn.textContent = '收起粘贴区';
+        bulkTextarea.focus();
+      }
+    }
+
+    function syncPowerSlider() {
+      const step = parseFloat(powerStepSelect.value);
+      maxPowerSlider.step = step;
+      maxPowerSlider.min = step;
+      const max = parseFloat(maxPowerSlider.max);
+      let current = parseFloat(maxPowerSlider.value);
+      if (!Number.isFinite(current) || current < step) {
+        current = step;
+      }
+      if (current > max) {
+        current = max;
+      }
+      maxPowerSlider.value = current;
+    }
+
+    maxPowerSlider.addEventListener('input', updatePowerLabel);
+    powerStepSelect.addEventListener('change', () => {
+      syncPowerSlider();
+      updatePowerLabel();
     });
     runFitBtn.addEventListener('click', handleFit);
     resetBtn.addEventListener('click', resetTable);
     addRowBtn.addEventListener('click', () => addRow());
     loadDemoBtn.addEventListener('click', loadDemo);
+    toggleBulkBtn.addEventListener('click', () => toggleBulkPanel());
+    bulkCloseBtn.addEventListener('click', () => toggleBulkPanel(true));
+    bulkApplyBtn.addEventListener('click', () => {
+      const pairs = parseBulkInput(bulkTextarea.value);
+      if (!pairs.length) {
+        alert('未识别到有效的数据，请确认格式为“X Y”。');
+        return;
+      }
+      dataBody.innerHTML = '';
+      pairs.forEach(({ x, y }) => addRow(x, y));
+      toggleBulkPanel(true);
+    });
+    axisXZeroCheckbox.addEventListener('change', () => {
+      axisOptions.xZero = axisXZeroCheckbox.checked;
+      if (lastFit) {
+        renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+      }
+    });
+    axisYZeroCheckbox.addEventListener('change', () => {
+      axisOptions.yZero = axisYZeroCheckbox.checked;
+      if (lastFit) {
+        renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+      }
+    });
 
     // 初始化
+    syncPowerSlider();
     resetTable();
   </script>
 </body>
