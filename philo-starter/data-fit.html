@@ -275,6 +275,57 @@
     let lastFit = null;
     const axisOptions = { xZero: false, yZero: false };
 
+    const foldIndicatorPlugin = {
+      id: 'foldIndicator',
+      afterDraw(chart, _args, opts) {
+        if (!opts) return;
+        const { x, y } = opts;
+        const { ctx, chartArea } = chart;
+        ctx.save();
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(100,116,139,0.65)';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px "Inter", "Noto Sans SC", sans-serif';
+
+        if (x) {
+          const baseX = chartArea.left + 10;
+          const baseY = chartArea.bottom;
+          ctx.beginPath();
+          ctx.moveTo(baseX - 4, baseY);
+          ctx.lineTo(baseX, baseY - 8);
+          ctx.lineTo(baseX + 4, baseY);
+          ctx.stroke();
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText('0', baseX - 8, baseY + 6);
+        }
+
+        if (y) {
+          const baseX = chartArea.left;
+          const baseY = chartArea.bottom - 10;
+          ctx.beginPath();
+          ctx.moveTo(baseX, baseY + 4);
+          ctx.lineTo(baseX + 8, baseY);
+          ctx.lineTo(baseX, baseY - 4);
+          ctx.stroke();
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('0', baseX - 6, baseY + 8);
+        }
+
+        ctx.restore();
+      }
+    };
+
+    if (!window.__foldIndicatorRegistered) {
+      Chart.register(foldIndicatorPlugin);
+      window.__foldIndicatorRegistered = true;
+    }
+
+    function arrayMin(values, fallback = 0) {
+      return values.length ? Math.min(...values) : fallback;
+    }
+
     function addRow(x = '', y = '') {
       const clone = rowTemplate.content.cloneNode(true);
       const tr = clone.querySelector('tr');
@@ -433,7 +484,7 @@
         .join(' ');
     }
 
-    function updateMetrics(metrics, count, powers) {
+    function updateMetrics(metrics, count, powers, foldState = null) {
       const highestPower = powers[powers.length - 1];
       const hasFraction = powers.some(power => !isIntegerPower(power));
       const stepLabel = powers.length > 1 ? formatPower(powers[1]) : '—';
@@ -444,7 +495,15 @@
       metricRmse.textContent = formatNumber(metrics.rmse, 3);
       metricMae.textContent = formatNumber(metrics.mae, 3);
       metricCount.textContent = count;
-      fitSummary.textContent = `已基于 ${count} 个样本点拟合 ${powers.length} 个幂次（${summaryParts.join('，')}）。`;
+      const baseSummary = `已基于 ${count} 个样本点拟合 ${powers.length} 个幂次（${summaryParts.join('，')}）。`;
+      if (foldState?.x || foldState?.y) {
+        const folds = [];
+        if (foldState.x) folds.push('X 轴零点空白折叠');
+        if (foldState.y) folds.push('Y 轴零点空白折叠');
+        fitSummary.textContent = `${baseSummary} 已自动${folds.join('，')}，让拟合曲线贴合坐标轴。`;
+      } else {
+        fitSummary.textContent = baseSummary;
+      }
     }
 
     function updateCoefTable(coeffs, powers) {
@@ -481,7 +540,7 @@
     }
 
     function renderChart(points, coeffs, powers, sampleCount) {
-      if (!points.length) return;
+      if (!points.length) return null;
       const sortedPoints = [...points].sort((a, b) => a.x - b.x);
       const minX = sortedPoints[0].x;
       const maxX = sortedPoints[sortedPoints.length - 1].x;
@@ -497,6 +556,17 @@
           fitData.push({ x, y });
         }
       }
+      const yValues = sortedPoints.map(p => p.y);
+      const allYValues = yValues.concat(fitData.map(p => p.y));
+      const minY = arrayMin(allYValues, 0);
+      const foldState = {
+        x: axisOptions.xZero && minX > 0 ? { zero: 0, start: minX } : null,
+        y: axisOptions.yZero && minY > 0 ? { zero: 0, start: minY } : null
+      };
+      const xBeginZero = axisOptions.xZero && !foldState.x;
+      const yBeginZero = axisOptions.yZero && !foldState.y;
+      const xScaleMin = foldState.x ? foldState.x.start : (xBeginZero ? 0 : undefined);
+      const yScaleMin = foldState.y ? foldState.y.start : (yBeginZero ? 0 : undefined);
       if (chartInstance) {
         chartInstance.destroy();
       }
@@ -532,18 +602,24 @@
           scales: {
             x: {
               type: 'linear',
-              beginAtZero: axisOptions.xZero,
-              suggestedMin: axisOptions.xZero ? 0 : undefined,
-              min: axisOptions.xZero ? 0 : undefined,
+              beginAtZero: xBeginZero,
+              suggestedMin: xBeginZero ? 0 : undefined,
+              min: typeof xScaleMin === 'number' ? xScaleMin : undefined,
               title: { display: true, text: 'X', color: '#475569' },
-              grid: { color: 'rgba(148,163,184,0.2)' }
+              grid: { color: 'rgba(148,163,184,0.2)' },
+              ticks: {
+                callback: (value) => formatNumber(Number(value), 4)
+              }
             },
             y: {
-              beginAtZero: axisOptions.yZero,
-              suggestedMin: axisOptions.yZero ? 0 : undefined,
-              min: axisOptions.yZero ? 0 : undefined,
+              beginAtZero: yBeginZero,
+              suggestedMin: yBeginZero ? 0 : undefined,
+              min: typeof yScaleMin === 'number' ? yScaleMin : undefined,
               title: { display: true, text: 'Y', color: '#475569' },
-              grid: { color: 'rgba(148,163,184,0.2)' }
+              grid: { color: 'rgba(148,163,184,0.2)' },
+              ticks: {
+                callback: (value) => formatNumber(Number(value), 4)
+              }
             }
           },
           plugins: {
@@ -566,10 +642,12 @@
                   return `拟合：(${formatNumber(ctx.parsed.x, 4)}, ${formatNumber(ctx.parsed.y, 4)})`;
                 }
               }
-            }
+            },
+            foldIndicator: foldState
           }
         }
       });
+      return foldState;
     }
 
     function updatePowerLabel() {
@@ -601,12 +679,12 @@
       try {
         const coeffs = leastSquares(points, powers);
         const metrics = computeMetrics(points, coeffs, powers);
-        updateMetrics(metrics, points.length, powers);
         updateCoefTable(coeffs, powers);
         updateResidualTable(points, metrics.predictions);
         updateEquation(coeffs, powers);
-        renderChart(points, coeffs, powers, sampleCount);
-        lastFit = { points, coeffs, powers, sampleCount };
+        const foldState = renderChart(points, coeffs, powers, sampleCount);
+        updateMetrics(metrics, points.length, powers, foldState);
+        lastFit = { points, coeffs, powers, sampleCount, metrics };
       } catch (error) {
         alert('拟合失败：' + error.message);
       }
@@ -722,13 +800,19 @@
     axisXZeroCheckbox.addEventListener('change', () => {
       axisOptions.xZero = axisXZeroCheckbox.checked;
       if (lastFit) {
-        renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+        const foldState = renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+        if (lastFit.metrics) {
+          updateMetrics(lastFit.metrics, lastFit.points.length, lastFit.powers, foldState);
+        }
       }
     });
     axisYZeroCheckbox.addEventListener('change', () => {
       axisOptions.yZero = axisYZeroCheckbox.checked;
       if (lastFit) {
-        renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+        const foldState = renderChart(lastFit.points, lastFit.coeffs, lastFit.powers, lastFit.sampleCount);
+        if (lastFit.metrics) {
+          updateMetrics(lastFit.metrics, lastFit.points.length, lastFit.powers, foldState);
+        }
       }
     });
 
