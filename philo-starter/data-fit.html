@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataFit Studio · 数据拟合工作室</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#6366f1',
+            ink: '#0f172a',
+            soft: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['"Inter"', '"Noto Sans SC"', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            glass: '0 20px 45px -20px rgba(79, 70, 229, 0.45)'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08), transparent 55%),
+                    radial-gradient(circle at 90% 10%, rgba(14,165,233,0.12), transparent 55%),
+                    #f4f6fb; }
+  </style>
+</head>
+<body class="min-h-screen text-[color:var(--ink)]" style="--ink:#0f172a;">
+  <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-white/80">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 font-semibold text-indigo-600">
+        <span class="inline-flex h-2.5 w-2.5 rounded-full bg-indigo-500"></span>
+        DataFit Studio
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm text-slate-600">
+        <a class="hover:text-indigo-500" href="#input">数据输入</a>
+        <a class="hover:text-indigo-500" href="#chart">拟合图像</a>
+        <a class="hover:text-indigo-500" href="#insight">分析报告</a>
+      </div>
+      <a href="#input" class="px-3 py-1.5 text-sm rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-200/60">开始拟合</a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 pb-16">
+    <section class="pt-12 md:pt-16 grid lg:grid-cols-[1.2fr,1fr] gap-10 items-center">
+      <div>
+        <span class="text-xs uppercase tracking-[0.4em] text-indigo-400">Data Intelligence</span>
+        <h1 class="mt-4 text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
+          自主输入数据，<span class="text-indigo-500">一键生成</span><br>拟合曲线与全面分析
+        </h1>
+        <p class="mt-5 text-slate-600 leading-relaxed">
+          支持 1-5 次多项式拟合，实时输出拟合曲线、残差指标、关键统计与交互式图表。
+          在课堂演示、科研速算或竞赛准备中，快速验证你的假设。
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-500">
+          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">多项式拟合</span>
+          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">自定义数据输入</span>
+          <span class="px-3 py-1 rounded-full bg-white/70 border border-indigo-100">指标一览</span>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-6 -right-6 w-24 h-24 bg-indigo-100 rounded-full blur-3xl opacity-70"></div>
+        <div class="relative rounded-3xl bg-white/80 border border-white shadow-glass backdrop-blur p-6">
+          <h2 class="text-lg font-medium text-slate-900">快速上手</h2>
+          <ol class="mt-4 space-y-3 text-sm text-slate-600">
+            <li class="flex gap-3">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-white">1</span>
+              输入或粘贴你的数据点（X, Y）。
+            </li>
+            <li class="flex gap-3">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-white">2</span>
+              选择拟合的多项式阶数。
+            </li>
+            <li class="flex gap-3">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-white">3</span>
+              点击「生成拟合」，查看图像与分析结果。
+            </li>
+          </ol>
+          <button id="load-demo" class="mt-6 w-full px-4 py-2 rounded-xl bg-slate-900 text-white text-sm hover:bg-slate-800">加载示例数据</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="input" class="mt-14 grid lg:grid-cols-[1.1fr,0.9fr] gap-10">
+      <div class="bg-white/90 rounded-3xl border border-white shadow-xl shadow-indigo-100/80 p-8 space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold text-slate-900">数据输入</h2>
+          <button id="add-row" class="text-sm px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-500">+ 添加行</button>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-slate-100">
+          <table class="min-w-full divide-y divide-slate-100">
+            <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+              <tr>
+                <th class="px-4 py-3 text-left">序号</th>
+                <th class="px-4 py-3 text-left">X</th>
+                <th class="px-4 py-3 text-left">Y</th>
+                <th class="px-4 py-3 text-left">操作</th>
+              </tr>
+            </thead>
+            <tbody id="data-body" class="divide-y divide-slate-100 bg-white text-sm">
+            </tbody>
+          </table>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600">
+          <label class="flex flex-col gap-2">
+            <span class="text-xs uppercase tracking-wide text-slate-500">拟合阶数</span>
+            <input id="degree" type="range" min="1" max="5" value="2" class="accent-indigo-500">
+            <span class="text-xs text-slate-500">当前阶数：<span id="degree-label" class="text-indigo-500 font-medium">2</span> 次多项式</span>
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="text-xs uppercase tracking-wide text-slate-500">插值/拟合点数</span>
+            <select id="sample-count" class="rounded-xl border border-slate-200 px-3 py-2 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+            </select>
+            <span class="text-xs text-slate-500">用于绘制拟合曲线的取样点数量</span>
+          </label>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button id="run-fit" class="px-4 py-2 rounded-xl bg-indigo-500 text-white text-sm font-medium shadow-lg shadow-indigo-200/60 hover:bg-indigo-600">生成拟合</button>
+          <button id="reset" class="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-600 hover:text-indigo-500 hover:border-indigo-300">清空数据</button>
+        </div>
+        <p class="text-xs text-slate-500">提示：至少需要 <span class="font-semibold">阶数+1</span> 个有效数据点。可通过粘贴 Excel/CSV 中的两列数据快速填充。</p>
+      </div>
+
+      <div id="insight" class="space-y-6">
+        <div class="bg-white/90 rounded-3xl border border-white shadow-xl shadow-indigo-100/80 p-8">
+          <h3 class="text-lg font-semibold text-slate-900">拟合指标</h3>
+          <dl id="metric-panel" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <dt class="text-xs uppercase tracking-wide text-slate-500">R² 决定系数</dt>
+              <dd id="metric-r2" class="mt-2 text-2xl font-semibold text-slate-900">—</dd>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <dt class="text-xs uppercase tracking-wide text-slate-500">RMSE</dt>
+              <dd id="metric-rmse" class="mt-2 text-2xl font-semibold text-slate-900">—</dd>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <dt class="text-xs uppercase tracking-wide text-slate-500">MAE</dt>
+              <dd id="metric-mae" class="mt-2 text-2xl font-semibold text-slate-900">—</dd>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <dt class="text-xs uppercase tracking-wide text-slate-500">样本数量</dt>
+              <dd id="metric-count" class="mt-2 text-2xl font-semibold text-slate-900">—</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="bg-white/90 rounded-3xl border border-white shadow-xl shadow-indigo-100/80 p-8">
+          <h3 class="text-lg font-semibold text-slate-900">拟合方程</h3>
+          <p id="equation" class="mt-3 text-sm text-slate-600 leading-relaxed">等待生成…</p>
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full text-sm text-left text-slate-600">
+              <thead class="text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th class="py-2 pr-6">系数</th>
+                  <th class="py-2">值</th>
+                </tr>
+              </thead>
+              <tbody id="coef-table" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chart" class="mt-16 bg-white/90 rounded-3xl border border-white shadow-xl shadow-indigo-100/80 p-8">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-semibold text-slate-900">拟合图像</h2>
+          <p class="text-sm text-slate-600">散点图展示原始数据，平滑曲线为拟合结果。可悬停查看每个点的具体数值。</p>
+        </div>
+        <div id="fit-summary" class="text-sm text-slate-500"></div>
+      </div>
+      <div class="mt-6 h-[420px]">
+        <canvas id="fit-chart"></canvas>
+      </div>
+      <div class="mt-6 overflow-x-auto">
+        <table class="min-w-full text-sm text-left text-slate-600">
+          <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-4 py-2">序号</th>
+              <th class="px-4 py-2">X</th>
+              <th class="px-4 py-2">Y (真实)</th>
+              <th class="px-4 py-2">Ŷ (拟合)</th>
+              <th class="px-4 py-2">残差</th>
+            </tr>
+          </thead>
+          <tbody id="residual-table" class="bg-white divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <template id="row-template">
+    <tr>
+      <td class="px-4 py-3 text-slate-400 text-xs align-middle">#</td>
+      <td class="px-4 py-3"><input type="number" step="any" class="w-full rounded-xl border border-slate-200 px-3 py-2 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200" placeholder="X"></td>
+      <td class="px-4 py-3"><input type="number" step="any" class="w-full rounded-xl border border-slate-200 px-3 py-2 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200" placeholder="Y"></td>
+      <td class="px-4 py-3 text-xs text-indigo-500">
+        <button class="remove-row px-3 py-1.5 rounded-lg border border-slate-200 hover:border-rose-200 hover:text-rose-500">删除</button>
+      </td>
+    </tr>
+  </template>
+
+  <script>
+    const dataBody = document.getElementById('data-body');
+    const rowTemplate = document.getElementById('row-template');
+    const degreeSlider = document.getElementById('degree');
+    const degreeLabel = document.getElementById('degree-label');
+    const runFitBtn = document.getElementById('run-fit');
+    const resetBtn = document.getElementById('reset');
+    const addRowBtn = document.getElementById('add-row');
+    const loadDemoBtn = document.getElementById('load-demo');
+    const sampleCountSelect = document.getElementById('sample-count');
+    const metricR2 = document.getElementById('metric-r2');
+    const metricRmse = document.getElementById('metric-rmse');
+    const metricMae = document.getElementById('metric-mae');
+    const metricCount = document.getElementById('metric-count');
+    const equationEl = document.getElementById('equation');
+    const coefTable = document.getElementById('coef-table');
+    const residualTable = document.getElementById('residual-table');
+    const fitSummary = document.getElementById('fit-summary');
+    const ctx = document.getElementById('fit-chart').getContext('2d');
+    let chartInstance;
+
+    function addRow(x = '', y = '') {
+      const clone = rowTemplate.content.cloneNode(true);
+      const tr = clone.querySelector('tr');
+      const inputs = tr.querySelectorAll('input');
+      inputs[0].value = x;
+      inputs[1].value = y;
+      tr.querySelector('.remove-row').addEventListener('click', () => {
+        tr.remove();
+        refreshRowIndex();
+      });
+      dataBody.appendChild(tr);
+      refreshRowIndex();
+    }
+
+    function refreshRowIndex() {
+      [...dataBody.querySelectorAll('tr')].forEach((row, idx) => {
+        row.querySelector('td').textContent = idx + 1;
+      });
+    }
+
+    function parseData() {
+      const rows = [...dataBody.querySelectorAll('tr')];
+      const points = [];
+      rows.forEach(row => {
+        const [xInput, yInput] = row.querySelectorAll('input');
+        const xVal = parseFloat(xInput.value);
+        const yVal = parseFloat(yInput.value);
+        if (!Number.isNaN(xVal) && !Number.isNaN(yVal)) {
+          points.push({ x: xVal, y: yVal });
+        }
+      });
+      return points;
+    }
+
+    function computePowerSums(points, maxPower) {
+      const sums = new Array(maxPower + 1).fill(0);
+      for (const { x } of points) {
+        let term = 1;
+        for (let k = 0; k <= maxPower; k++) {
+          sums[k] += term;
+          term *= x;
+        }
+      }
+      return sums;
+    }
+
+    function leastSquares(points, degree) {
+      const n = degree + 1;
+      const matrix = Array.from({ length: n }, () => new Array(n).fill(0));
+      const rhs = new Array(n).fill(0);
+      const sums = computePowerSums(points, degree * 2);
+      for (let row = 0; row < n; row++) {
+        for (let col = 0; col < n; col++) {
+          matrix[row][col] = sums[row + col];
+        }
+      }
+      for (let i = 0; i < n; i++) {
+        let sum = 0;
+        for (const { x, y } of points) {
+          sum += y * Math.pow(x, i);
+        }
+        rhs[i] = sum;
+      }
+      return gaussianElimination(matrix, rhs);
+    }
+
+    function gaussianElimination(A, b) {
+      const n = A.length;
+      for (let i = 0; i < n; i++) {
+        // pivot
+        let maxRow = i;
+        for (let j = i + 1; j < n; j++) {
+          if (Math.abs(A[j][i]) > Math.abs(A[maxRow][i])) maxRow = j;
+        }
+        [A[i], A[maxRow]] = [A[maxRow], A[i]];
+        [b[i], b[maxRow]] = [b[maxRow], b[i]];
+        const pivot = A[i][i];
+        if (Math.abs(pivot) < 1e-12) {
+          throw new Error('矩阵奇异，无法求解');
+        }
+        for (let k = i; k < n; k++) A[i][k] /= pivot;
+        b[i] /= pivot;
+        for (let j = 0; j < n; j++) {
+          if (j === i) continue;
+          const factor = A[j][i];
+          for (let k = i; k < n; k++) A[j][k] -= factor * A[i][k];
+          b[j] -= factor * b[i];
+        }
+      }
+      return b;
+    }
+
+    function evaluatePolynomial(coeffs, x) {
+      return coeffs.reduce((acc, coeff, idx) => acc + coeff * Math.pow(x, idx), 0);
+    }
+
+    function computeMetrics(points, coeffs) {
+      const yMean = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+      let ssTot = 0;
+      let ssRes = 0;
+      let absSum = 0;
+      let squaredErrorSum = 0;
+      const predictions = [];
+      for (const point of points) {
+        const predicted = evaluatePolynomial(coeffs, point.x);
+        predictions.push(predicted);
+        const residual = point.y - predicted;
+        ssTot += Math.pow(point.y - yMean, 2);
+        ssRes += Math.pow(residual, 2);
+        squaredErrorSum += residual * residual;
+        absSum += Math.abs(residual);
+      }
+      const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;
+      const rmse = Math.sqrt(squaredErrorSum / points.length);
+      const mae = absSum / points.length;
+      return { r2, rmse, mae, predictions };
+    }
+
+    function formatNumber(value, digits = 4) {
+      if (!Number.isFinite(value)) return '—';
+      const absVal = Math.abs(value);
+      if (absVal !== 0 && (absVal < 0.001 || absVal >= 10000)) {
+        return value.toExponential(2);
+      }
+      return value.toFixed(digits);
+    }
+
+    function buildEquation(coeffs) {
+      return coeffs
+        .map((coeff, idx) => {
+          const formatted = formatNumber(coeff, 4);
+          if (idx === 0) return `${formatted}`;
+          const sign = coeff >= 0 ? '+' : '';
+          const power = idx === 1 ? 'x' : `x^${idx}`;
+          return `${sign}${formatted}${power}`;
+        })
+        .join(' ');
+    }
+
+    function updateMetrics(metrics, count, degree) {
+      metricR2.textContent = formatNumber(metrics.r2, 3);
+      metricRmse.textContent = formatNumber(metrics.rmse, 3);
+      metricMae.textContent = formatNumber(metrics.mae, 3);
+      metricCount.textContent = count;
+      fitSummary.textContent = `已基于 ${count} 个样本点生成 ${degree} 次拟合曲线。`;
+    }
+
+    function updateCoefTable(coeffs) {
+      coefTable.innerHTML = '';
+      coeffs.forEach((value, idx) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="py-2 pr-6 text-slate-500">a<sub>${idx}</sub></td><td class="py-2">${formatNumber(value, 6)}</td>`;
+        coefTable.appendChild(row);
+      });
+    }
+
+    function updateResidualTable(points, predictions) {
+      residualTable.innerHTML = '';
+      points.forEach((point, idx) => {
+        const predicted = predictions[idx];
+        const residual = point.y - predicted;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-4 py-2 text-slate-400 text-xs">${idx + 1}</td>
+          <td class="px-4 py-2">${formatNumber(point.x, 6)}</td>
+          <td class="px-4 py-2">${formatNumber(point.y, 6)}</td>
+          <td class="px-4 py-2 text-indigo-500">${formatNumber(predicted, 6)}</td>
+          <td class="px-4 py-2 text-rose-500">${formatNumber(residual, 6)}</td>`;
+        residualTable.appendChild(row);
+      });
+    }
+
+    function updateEquation(coeffs) {
+      equationEl.innerHTML = `f(x) = <span class="font-mono text-indigo-600">${buildEquation(coeffs)}</span>`;
+    }
+
+    function renderChart(points, coeffs, sampleCount) {
+      const sortedPoints = [...points].sort((a, b) => a.x - b.x);
+      const minX = sortedPoints[0].x;
+      const maxX = sortedPoints[sortedPoints.length - 1].x;
+      const step = (maxX - minX) / (sampleCount - 1 || 1);
+      const fitData = [];
+      for (let i = 0; i < sampleCount; i++) {
+        const x = minX + i * step;
+        const y = evaluatePolynomial(coeffs, x);
+        fitData.push({ x, y });
+      }
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+      chartInstance = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              type: 'scatter',
+              label: '原始数据',
+              data: points,
+              pointBackgroundColor: '#6366f1',
+              pointBorderWidth: 0,
+              pointRadius: 5,
+              hoverRadius: 6
+            },
+            {
+              type: 'line',
+              label: '拟合曲线',
+              data: fitData,
+              borderColor: '#0ea5e9',
+              borderWidth: 3,
+              tension: 0.25,
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          scales: {
+            x: {
+              type: 'linear',
+              title: { display: true, text: 'X', color: '#475569' },
+              grid: { color: 'rgba(148,163,184,0.2)' }
+            },
+            y: {
+              title: { display: true, text: 'Y', color: '#475569' },
+              grid: { color: 'rgba(148,163,184,0.2)' }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                usePointStyle: true,
+                color: '#475569'
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1e293b',
+              borderWidth: 0,
+              titleColor: '#e2e8f0',
+              bodyColor: '#cbd5f5',
+              callbacks: {
+                label: (ctx) => {
+                  if (ctx.dataset.type === 'scatter') {
+                    return `原始点：(${formatNumber(ctx.parsed.x, 4)}, ${formatNumber(ctx.parsed.y, 4)})`;
+                  }
+                  return `拟合：(${formatNumber(ctx.parsed.x, 4)}, ${formatNumber(ctx.parsed.y, 4)})`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function handleFit() {
+      const points = parseData();
+      const degree = parseInt(degreeSlider.value, 10);
+      if (points.length < degree + 1) {
+        alert(`需要至少 ${degree + 1} 个有效数据点（当前仅 ${points.length} 个）。`);
+        return;
+      }
+      const sampleCount = parseInt(sampleCountSelect.value, 10);
+      try {
+        const coeffs = leastSquares(points, degree);
+        const metrics = computeMetrics(points, coeffs);
+        updateMetrics(metrics, points.length, degree);
+        updateCoefTable(coeffs);
+        updateResidualTable(points, metrics.predictions);
+        updateEquation(coeffs);
+        renderChart(points, coeffs, sampleCount);
+      } catch (error) {
+        alert('拟合失败：' + error.message);
+      }
+    }
+
+    function resetTable() {
+      dataBody.innerHTML = '';
+      for (let i = 0; i < 6; i++) addRow();
+      residualTable.innerHTML = '';
+      coefTable.innerHTML = '';
+      metricR2.textContent = '—';
+      metricRmse.textContent = '—';
+      metricMae.textContent = '—';
+      metricCount.textContent = '—';
+      equationEl.textContent = '等待生成…';
+      fitSummary.textContent = '';
+      if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+      }
+    }
+
+    function loadDemo() {
+      const demoData = [
+        { x: -4, y: 23.1 },
+        { x: -3, y: 12.8 },
+        { x: -2, y: 7.6 },
+        { x: -1, y: 6.2 },
+        { x: 0, y: 7.5 },
+        { x: 1, y: 11.9 },
+        { x: 2, y: 19.2 },
+        { x: 3, y: 29.7 },
+        { x: 4, y: 43.5 }
+      ];
+      dataBody.innerHTML = '';
+      demoData.forEach(point => addRow(point.x, point.y));
+    }
+
+    degreeSlider.addEventListener('input', () => {
+      degreeLabel.textContent = degreeSlider.value;
+    });
+    runFitBtn.addEventListener('click', handleFit);
+    resetBtn.addEventListener('click', resetTable);
+    addRowBtn.addEventListener('click', () => addRow());
+    loadDemoBtn.addEventListener('click', loadDemo);
+
+    // 初始化
+    resetTable();
+  </script>
+</body>
+</html>
